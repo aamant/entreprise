@@ -1,0 +1,42 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block main %}
+    <h1 class="page-header">Factures</h1>
+
+    <table class="table table-hover">
+        <tr>
+            <th>Numero</th>
+            <th>Client</th>
+            <th>Contact</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>&nbsp;</th>
+        </tr>
+        {% for invoice in invoices %}
+            <tr>
+                <td>{{ invoice.number }}</td>
+                <td>{{ invoice.customer.name }}</td>
+                <td>{{ invoice.customer.firstname }} {{ invoice.customer.lastname }}</td>
+                <td>{{ invoice.date|date("d/m/Y") }}</td>
+                <td>{{ invoice.total }}</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                            Action
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            {% if invoice.number == '' %}
+                                <li role="presentation"><a href="{{ path('invoice_invoice', {'id': invoice.id}) }}">Edit</a></li>
+                                <li role="presentation"><a href="{{ path('invoice_delete') }}">Delete</a></li>
+                            {% else %}
+                                <li role="presentation"><a href="{{ path('invoice_pdf', {'id': invoice.id}) }}">Générer le PDF</a></li>
+                            {% endif %}
+                            <li role="presentation"><a href="{{ path('invoice_view', {'id': invoice.id}) }}" target="_blank">Voir</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

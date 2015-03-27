@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Facture {{ invoice.number }}</title>
+        <link rel="stylesheet" href="{{ base_path }}/css/bootstrap.css">
+        <style>
+            @import url(http://fonts.googleapis.com/css?family=Bree+Serif);
+            body, h1, h2, h3, h4, h5, h6{
+                font-family: 'Bree Serif', serif;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container" style="width: 1000px">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="panel panel-default" style="margin-bottom: 1px">
+                        <div class="panel-heading">
+                            <h4>{{ company.name }}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <p>
+                                {{ company.address }} <br>
+                                {{ company.postcode }} {{ company.city }}<br>
+                                Tel: {{ company.phone }} <br>
+                                Email: {{ company.email }} <br>
+                                Site: {{ company.website }} <br>
+                                SIRET: {{ company.siret }} <br>
+                            </p>
+                        </div>
+                    </div>
+                    <small>Dispensé d'immatriculation au Registre du Commerce et des Sociétés et au Répertoire des Métiers</small>
+                    <br/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <h1>Facture n° {{ invoice.number }}</h1>
+                    <br/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-xs-offset-7">
+                    <h4>{{ customer.name }}</h4>
+                    <p>
+                        {{ customer.firstname }} {{ customer.lastname }}<br>
+                        {{ customer.address }}<br>
+                        {% if (customer.getAddressComp()) %}
+                            {{ customer.getAddressComp() }}<br>
+                        {% endif %}
+                        {{ customer.postcode }} {{ customer.city }}<br>
+                    </p>
+                </div>
+            </div>
+            <br/><br/><br/>
+            <!-- / end client details section -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="width: 60%">
+                        <h4>Description</h4>
+                    </th>
+                    <th>
+                        <h4>Quantité</h4>
+                    </th>
+                    <th>
+                        <h4>Prix Unitaire HT</h4>
+                    </th>
+                    <th>
+                        <h4>Total HT</h4>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in invoice.items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td class="text-right">{{ item.quantity }}</td>
+                    <td class="text-right">{{ item.price|number_format(2, '.', ',') }} €</td>
+                    <td class="text-right">{{ item.total|number_format(2, '.', ',') }} €</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="row text-right">
+                <div class="col-xs-2 col-xs-offset-8">
+                    <p>
+                        <strong>
+                            Total HT : <br>
+                        </strong>
+                    </p>
+                </div>
+                <div class="col-xs-2">
+                    <strong>
+                        {{ invoice.total|number_format(2, '.', ',') }} € <br>
+                    </strong>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 text-right">
+                    <small>TVA non applicable, art. 293 B du CGI</small>
+                </div>
+            </div>
+            <br/><br/>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>
+                        <small>
+                            Date limite de règlement : à réception <br/>
+                            Taux des pénalités de retard : taux d'intérêt légal à la date d'émission de la facture <br/>
+                            En cas de retard de paiement, application d’une indemnité forfaitaire pour frais de recouvrement de 40€ selon l'article D. 441-5 du code du commerce <br/>
+                        </small>
+                    </p>
+                </div>
+            </div>
+            <br/><br/>
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4>Informations bancaires</h4>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Banque</th>
+                            <th>Indicatif</th>
+                            <th>Numéro de compte</th>
+                            <th>Clé RIB</th>
+                            <th>Domiciliation</th>
+                        </tr>
+                        <tr>
+                            <td>{{ company.bank }}</td>
+                            <td>{{ company.indicatif }}</td>
+                            <td>{{ company.compte }}</td>
+                            <td>{{ company.keyrib }}</td>
+                            <td>{{ company.domiciliation }}</td>
+                        </tr>
+                        <tr>
+                            <th>IBAN</th>
+                            <td colspan="4">{{ company.iban }}</td>
+                        </tr>
+                        <tr>
+                            <th>Code BIC</th>
+                            <td colspan="4">{{ company.bic }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

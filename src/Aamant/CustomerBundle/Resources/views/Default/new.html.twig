@@ -1,0 +1,11 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block menusidebar %}
+    {{ parent() }}
+    <li><a href="{{ url('customers_list') }}">Retour à la liste</a></li>
+{% endblock %}
+
+{% block main %}
+    <h1 class="page-header">Nouveau client</h1>
+    {{ form(form, { 'style': 'horizontal' }) }}
+{% endblock %}
