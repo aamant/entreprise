@@ -79,7 +79,7 @@ class Invoice
      * @param string $number
      * @return Invoice
      */
-    public function setNumber($number)
+    protected function setNumber($number)
     {
         $this->number = $number;
 
@@ -229,7 +229,7 @@ class Invoice
      * @param \DateTime $date
      * @return Invoice
      */
-    public function setDate($date)
+    protected function setDate($date)
     {
         $this->date = $date;
 
@@ -246,9 +246,9 @@ class Invoice
         return $this->date;
     }
 
-    public function create()
+    public function create($increment)
     {
         $this->setDate(Carbon::now());
-        $this->setNumber(date('Ym').'-1');
+        $this->setNumber(date('Ym').'-'.sprintf("%'.04d", $increment));
     }
 }

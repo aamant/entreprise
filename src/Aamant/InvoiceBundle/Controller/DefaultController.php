@@ -45,7 +45,12 @@ class DefaultController extends Controller
         if ($form->isValid()){
 
             if ($form->get('create')->isClicked()){
-                $invoice->create();
+                $config = $user->getCompany()->getConfig();
+                $increment = $config->getInvoiceIncrement();
+
+                $invoice->create($increment);
+                $config->setInvoiceIncrement(++$increment);
+                $em->persist($config);
             }
 
             $em->persist($invoice);
