@@ -40,7 +40,6 @@
         "braincrafted/bootstrap-bundle": "~2.0",
         "genemu/form-bundle": "2.2.*",
         "nesbot/carbon": "~1.18",
-        "slik/dompdf-bundle" : "dev-master",
         "knplabs/knp-snappy-bundle": "1.2.*",
         "h4cc/wkhtmltopdf-amd64": "0.12.2.1"
     },
