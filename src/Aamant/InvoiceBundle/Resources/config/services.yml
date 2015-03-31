@@ -1,0 +1,5 @@
+services:
+    payment.listener:
+        class: Aamant\InvoiceBundle\Listener\Payment
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }

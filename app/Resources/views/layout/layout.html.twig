@@ -17,7 +17,9 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if is_granted('ROLE_ADMIN') %}
                     <li><a href="{{ url('homepage') }}">Dashbord</a></li>
+                    <li><a href="{{ url('invoice_quotations_list') }}">Devis</a></li>
                     <li><a href="{{ url('invoices_list') }}">Factures</a></li>
+                    <li><a href="{{ url('invoice_payment_list') }}">Paiements</a></li>
                     <li><a href="{{ url('customers_list') }}">Clients</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ app.user.username }} <span class="caret"></span></a>
@@ -37,15 +39,47 @@
 </nav>
 {% endblock %}
 
-{% block sidebar %}
-    {% if is_granted('ROLE_ADMIN') %}
-    <ul class="nav nav-sidebar">
-        <li><a href="{{ url('customer_new') }}">Nouveau client</a></li>
-        <li><a href="{{ url('invoice_invoice') }}">Nouvelle facture</a></li>
-    </ul>
-    <hr/>
-    <ul class="nav nav-sidebar">
-        {% block menusidebar %}{% endblock %}
-    </ul>
-    {% endif %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            {% if is_granted('ROLE_ADMIN') %}
+                <ul class="nav nav-sidebar">
+                    <li><a href="{{ url('customer_new') }}">Nouveau client</a></li>
+                    <li><a href="{{ url('invoice_quotation') }}">Nouveau devis</a></li>
+                    <li><a href="{{ url('invoice_invoice') }}">Nouvelle facture</a></li>
+                    <li><a href="{{ url('invoice_payment_create') }}">Nouveau paiement</a></li>
+                </ul>
+                <hr/>
+                <ul class="nav nav-sidebar">
+                    {% block menusidebar %}{% endblock %}
+                </ul>
+            {% endif %}
+            {% block sidebar %}{% endblock %}
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="container-fluid">
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('notice') %}
+                    <div class="alert alert-info alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('error') %}
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+            </div>
+            {% block main %}{% endblock %}
+        </div>
+    </div>
+</div>
 {% endblock %}

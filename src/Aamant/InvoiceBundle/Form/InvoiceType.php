@@ -15,11 +15,23 @@ class InvoiceType extends AbstractType
         $builder->add('customer', 'entity', array(
             'class' => 'AamantCustomerBundle:Customer',
             'property' => 'name',
-            'empty_value' => 'Choisissez une option',
+            'empty_value' => 'Choisissez un client',
             'label' => 'Client',
             'query_builder' => function(EntityRepository $er) use($company) {
                 return $er->createQueryBuilder('u')
                     ->join('u.company', 'c')
+                    ->where('c.id = :id')
+                    ->setParameter('id', $company->getId());
+            }
+        ));
+        $builder->add('quotation', 'entity', array(
+            'class' => 'AamantInvoiceBundle:Quotation',
+            'property' => 'fullname',
+            'empty_value' => 'Choisissez un devis',
+            'label' => 'Devis',
+            'query_builder' => function(EntityRepository $er) use($company) {
+                return $er->createQueryBuilder('q')
+                    ->join('q.company', 'c')
                     ->where('c.id = :id')
                     ->setParameter('id', $company->getId());
             }

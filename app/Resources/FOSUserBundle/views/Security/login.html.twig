@@ -1,25 +1,26 @@
 {% extends "layout/base.html.twig" %}
 
 {% block body %}
+<div class="container-fluid">
+    <form action="{{ path("fos_user_security_check") }}" method="post" class="form-signin">
+        {% if error %}
+            <div class="alert alert-success" role="alert">{{ error|trans({}, 'FOSUserBundle') }}</div>
+        {% endif %}
 
-<form action="{{ path("fos_user_security_check") }}" method="post" class="form-signin">
-    {% if error %}
-        <div class="alert alert-success" role="alert">{{ error|trans({}, 'FOSUserBundle') }}</div>
-    {% endif %}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        <label for="username" class="sr-only">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
+        <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" placeholder="Email address" required="required" autofocus/>
 
-    <label for="username" class="sr-only">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" placeholder="Email address" required="required" autofocus/>
+        <label for="password" class="sr-only">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
+        <input type="password" id="password" name="_password" class="form-control" placeholder="Password" required="required" />
 
-    <label for="password" class="sr-only">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
-    <input type="password" id="password" name="_password" class="form-control" placeholder="Password" required="required" />
-
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> remember me
-        </label>
-    </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit" id="_submit" name="_submit">Connexion</button>
-</form>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> remember me
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="_submit" name="_submit">Connexion</button>
+    </form>
+</div>
 {% endblock body %}

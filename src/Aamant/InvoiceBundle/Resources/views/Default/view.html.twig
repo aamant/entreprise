@@ -56,6 +56,9 @@
             </div>
             <br/><br/><br/>
             <!-- / end client details section -->
+            {% if (invoice.quotation) %}
+            <p>Proposition commerciale n° {{ invoice.quotation.number}}</p>
+            {% endif %}
             <table class="table table-bordered">
                 <thead>
                 <tr>

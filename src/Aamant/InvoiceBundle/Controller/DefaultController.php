@@ -17,7 +17,7 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $invoices = $this->getDoctrine()->getRepository('AamantInvoiceBundle:Invoice')
-            ->findAll();
+            ->findForList($this->getUser()->getCompany());
 
         return ['invoices' => $invoices];
     }
@@ -68,6 +68,15 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("invoice/detail/{id}", name="invoice_detail")
+     * @Template()
+     */
+    public function detailAction($id)
+    {
+        return ['id' => $id];
+    }
+
+    /**
      * @Route("invoice/view/{id}", name="invoice_view")
      * @Template()
      */
@@ -92,42 +101,52 @@ class DefaultController extends Controller
      */
     public function pdfAction($id)
     {
-        $invoice = $this->getDoctrine()
-            ->getRepository('AamantInvoiceBundle:Invoice')
-            ->findFullWithUserById($id);
-        $user = $this->get('security.context')->getToken()->getUser();
-        $config = $user->getCompany()->getConfig();
+        try {
+            $invoice = $this->getDoctrine()
+                ->getRepository('AamantInvoiceBundle:Invoice')
+                ->findFullWithUserById($id);
+            $user = $this->get('security.context')->getToken()->getUser();
+            $config = $user->getCompany()->getConfig();
 
-        $filename = $config->getInvoiceExport().'/Facture-'.$invoice->getNumber().'.pdf';
+            $filename = $config->getInvoiceExport().'/Facture-'.$invoice->getNumber().'.pdf';
 
-        $html = $this->render('AamantInvoiceBundle:Default:view.html.twig', [
-            'invoice'   => $invoice,
-            'user'      => $user,
-            'company'   => $user->getCompany(),
-            'customer'  => $invoice->getCustomer(),
-            'base_path'      => realpath($this->get('kernel')->getRootDir() . '/../web/')
-        ])->getContent();
+            $html = $this->render('AamantInvoiceBundle:Default:view.html.twig', [
+                'invoice'   => $invoice,
+                'user'      => $user,
+                'company'   => $user->getCompany(),
+                'customer'  => $invoice->getCustomer(),
+                'base_path'      => realpath($this->get('kernel')->getRootDir() . '/../web/')
+            ])->getContent();
 
-        $this->get('knp_snappy.pdf')->generateFromHtml(
-            $this->renderView(
-                'AamantInvoiceBundle:Default:view.html.twig',
-                [
-                    'invoice'   => $invoice,
-                    'user'      => $user,
-                    'company'   => $user->getCompany(),
-                    'customer'  => $invoice->getCustomer(),
-                    'base_path'      => realpath($this->get('kernel')->getRootDir() . '/../web/')
-                ]
-            ),
-            $filename
-        );
+            $this->get('knp_snappy.pdf')->generateFromHtml(
+                $this->renderView(
+                    'AamantInvoiceBundle:Default:view.html.twig',
+                    [
+                        'invoice'   => $invoice,
+                        'user'      => $user,
+                        'company'   => $user->getCompany(),
+                        'customer'  => $invoice->getCustomer(),
+                        'base_path'      => realpath($this->get('kernel')->getRootDir() . '/../web/')
+                    ]
+                ),
+                $filename
+            );
 
-        $this->get('session')->getFlashBag()->add(
-            'success',
-            'La facture est générée'
-        );
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'La facture est générée'
+            );
 
-        return $this->redirectToRoute('invoices_list');
+            return $this->redirectToRoute('invoices_list');
+        }
+        catch (\Exception $e){
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $e->getMessage()
+            );
+
+            return $this->redirectToRoute('invoices_list');
+        }
     }
 
     /**

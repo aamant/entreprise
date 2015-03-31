@@ -6,33 +6,51 @@
     <table class="table table-hover">
         <tr>
             <th>Numero</th>
+            <th>Devis</th>
             <th>Client</th>
             <th>Contact</th>
             <th>Date</th>
             <th>Total</th>
+            <th>Encaissé</th>
+            <th>&nbsp;</th>
             <th>&nbsp;</th>
         </tr>
         {% for invoice in invoices %}
             <tr>
                 <td>{{ invoice.number }}</td>
+                <td>
+                    {% if (invoice.quotation) %}
+                        {{ invoice.quotation.number }}
+                    {% endif %}
+                </td>
                 <td>{{ invoice.customer.name }}</td>
                 <td>{{ invoice.customer.firstname }} {{ invoice.customer.lastname }}</td>
                 <td>{{ invoice.date|date("d/m/Y") }}</td>
                 <td>{{ invoice.total }}</td>
+                <td>{{ invoice.getPaid()|number_format(2, '.', ',') }} €</td>
+                <td>
+                    {% if invoice.status != 'close' and date('-1week') > date(invoice.date)  %}
+                        <span class="label label-danger">Retard de paiement</span>
+                    {% elseif (invoice.status != 'close') %}
+                        <span class="label label-warning">Attente de paiement</span>
+                    {% else %}
+                        <span class="label label-success">Payé</span>
+                    {% endif %}
+                </td>
                 <td style="width: 100px">
                     <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                        <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                             Action
                             <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
                             {% if invoice.number == '' %}
                                 <li role="presentation"><a href="{{ path('invoice_invoice', {'id': invoice.id}) }}">Edit</a></li>
                                 <li role="presentation"><a href="{{ path('invoice_delete') }}">Delete</a></li>
                             {% else %}
                                 <li role="presentation"><a href="{{ path('invoice_pdf', {'id': invoice.id}) }}">Générer le PDF</a></li>
                             {% endif %}
-                            <li role="presentation"><a href="{{ path('invoice_view', {'id': invoice.id}) }}" target="_blank">Voir</a></li>
+                            <li role="presentation"><a href="{{ path('invoice_detail', {'id': invoice.id}) }}">Voir</a></li>
                         </ul>
                     </div>
                 </td>

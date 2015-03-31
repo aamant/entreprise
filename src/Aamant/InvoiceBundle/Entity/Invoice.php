@@ -12,7 +12,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Invoice
 {
-    /**
+    const STATUS_WAIT = "wait";
+    const STATUS_PARTIAL = "partial";
+    const STATUS_CLOSE = "close";
+
+        /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -28,6 +32,16 @@ class Invoice
      * @ORM\ManyToOne(targetEntity="Aamant\CustomerBundle\Entity\Customer")
      */
     protected $customer;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Aamant\InvoiceBundle\Entity\Quotation", inversedBy="invoices")
+     */
+    protected $quotation;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Aamant\InvoiceBundle\Entity\Payment", mappedBy="invoice")
+     */
+    protected $payments;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -52,6 +66,12 @@ class Invoice
      * @Assert\NotBlank()
      */
     protected $total;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     * @Assert\NotBlank()
+     */
+    protected $status = "wait";
 
     /**
      * @ORM\OneToMany(targetEntity="Aamant\InvoiceBundle\Entity\Invoice\Item", mappedBy="invoice", cascade={"persist"})
@@ -250,5 +270,100 @@ class Invoice
     {
         $this->setDate(Carbon::now());
         $this->setNumber(date('Ym').'-'.sprintf("%'.04d", $increment));
+    }
+
+    /**
+     * Set quotation
+     *
+     * @param \Aamant\InvoiceBundle\Entity\Quotation $quotation
+     * @return Invoice
+     */
+    public function setQuotation(\Aamant\InvoiceBundle\Entity\Quotation $quotation = null)
+    {
+        $this->quotation = $quotation;
+
+        return $this;
+    }
+
+    /**
+     * Get quotation
+     *
+     * @return \Aamant\InvoiceBundle\Entity\Quotation 
+     */
+    public function getQuotation()
+    {
+        return $this->quotation;
+    }
+
+    /**
+     * Add payments
+     *
+     * @param \Aamant\InvoiceBundle\Entity\Payment $payments
+     * @return Invoice
+     */
+    public function addPayment(\Aamant\InvoiceBundle\Entity\Payment $payments)
+    {
+        $this->payments[] = $payments;
+        return $this;
+    }
+
+    /**
+     * Remove payments
+     *
+     * @param \Aamant\InvoiceBundle\Entity\Payment $payments
+     */
+    public function removePayment(\Aamant\InvoiceBundle\Entity\Payment $payments)
+    {
+        $this->payments->removeElement($payments);
+    }
+
+    /**
+     * Get payments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPayments()
+    {
+        return $this->payments;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPaid()
+    {
+        $value = 0;
+        foreach ($this->getPayments() as $payment){
+            $value += $payment->getTotal();
+        }
+        return $value;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     * @return Invoice
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function getFullname()
+    {
+        return $this->getNumber().' / '.$this->getCustomer()->getName().' / '.$this->getTotal();
     }
 }

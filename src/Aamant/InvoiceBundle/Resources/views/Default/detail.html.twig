@@ -1,0 +1,10 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block menusidebar %}
+    {{ parent() }}
+    <li><a href="{{ url('invoices_list') }}">Retour à la liste</a></li>
+{% endblock %}
+
+{% block main %}
+    <iframe src="{{ path('invoice_view', {'id': id}) }}" frameborder="0" style="width: 90%;height:1300px"></iframe>
+{% endblock %}

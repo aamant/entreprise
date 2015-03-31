@@ -2,7 +2,7 @@
 
 {% block menusidebar %}
     {{ parent() }}
-    <li><a href="{{ url('customers_list') }}">Retour à la liste</a></li>
+    <li><a href="{{ url('invoices_list') }}">Retour à la liste</a></li>
 {% endblock %}
 
 {% block main %}
@@ -12,6 +12,7 @@
     {{ form_errors(form) }}
 
     {{ form_row(form.customer) }}
+    {{ form_row(form.quotation) }}
 
     <br/><br/>
     <table class="table items" data-prototype="
