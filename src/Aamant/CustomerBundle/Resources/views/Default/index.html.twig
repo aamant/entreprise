@@ -15,7 +15,7 @@
     </tr>
     {% for customer in customers %}
     <tr>
-        <td>{{ customer.name }}</td>
+        <td><strong>{{ customer.name }}</strong></td>
         <td>{{ customer.firstname }}</td>
         <td>{{ customer.lastname }}</td>
         <td><a href="mailto:{{ customer.email }}">{{ customer.email }}</a></td>

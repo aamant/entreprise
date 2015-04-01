@@ -16,12 +16,13 @@ class QuotationRepository extends EntityRepository
     public function findForList(Company $company)
     {
         $query = $this->getEntityManager()
-            ->createQuery('
+            ->createQuery("
                 SELECT q, c, i FROM AamantInvoiceBundle:Quotation q
                 JOIN q.customer c
                 LEFT JOIN q.invoices i
                 WHERE q.company = :company
-            ')->setParameter('company', $company);
+                ORDER BY q.date DESC
+            ")->setParameter('company', $company);
 
         try {
             return $query->getResult();
@@ -38,28 +39,12 @@ class QuotationRepository extends EntityRepository
                 JOIN q.customer c
                 LEFT JOIN q.invoices i
                 WHERE q.company = :company
-                AND q.status IN ('wait', 'partial_invoiced')
+                AND q.status IN ('accept', 'partial_invoiced')
+                ORDER BY q.date DESC
             ")->setParameter('company', $company);
 
         try {
             return $query->getResult();
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
-    }
-
-    public function getWaitToInvoice(Company $company)
-    {
-        $query = $this->getEntityManager()
-            ->createQuery("
-                SELECT (SUM(q.total) - SUM(i.total)) as total FROM AamantInvoiceBundle:Quotation q
-                LEFT JOIN q.invoices i
-                WHERE q.company = :company
-                AND q.status IN ('wait', 'partial_invoiced')
-            ")->setParameter('company', $company);
-
-        try {
-            return $query->getSingleScalarResult();
         } catch (\Doctrine\ORM\NoResultException $e) {
             return null;
         }
@@ -78,7 +63,9 @@ class QuotationRepository extends EntityRepository
             ')->setParameter('company', $company);
 
         try {
-            list($before, $increment) = explode('-', $query->getSingleScalarResult());
+            $result = $query->getSingleScalarResult();
+            if (!$result) return 0;
+            list($before, $increment) = explode('-', $result);
             return $increment;
         } catch (\Doctrine\ORM\NoResultException $e) {
             return 0;

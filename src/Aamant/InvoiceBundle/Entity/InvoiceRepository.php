@@ -26,6 +26,7 @@ class InvoiceRepository extends EntityRepository
                 LEFT JOIN i.quotation q
                 LEFT JOIN i.payments p
                 WHERE i.company = :company
+                ORDER BY i.date DESC, i.number DESC
             ')->setParameter('company', $company);
 
         try {

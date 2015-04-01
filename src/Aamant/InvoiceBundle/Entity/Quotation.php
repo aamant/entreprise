@@ -12,12 +12,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Quotation
 {
-    const STATUS_WAIT = "wait";
     const STATUS_ACCEPT = "accept";
+    const STATUS_PARTIAL_INVOICED = "partial_invoiced";
+    const STATUS_WAIT = "wait";
+    const STATUS_INVOICED = "invoiced";
     const STATUS_REFUSED = "refused";
     const STATUS_CANCELLED = "cancelled";
-    const STATUS_PARTIAL_INVOICED = "partial_invoiced";
-    const STATUS_INVOICED = "invoiced";
 
     /**
      * @ORM\Id
@@ -234,7 +234,7 @@ class Quotation
                 return "Annulé";
             case static::STATUS_PARTIAL_INVOICED:
                 return "Facturation partielle";
-            case static::STATUS_INVOICE:
+            case static::STATUS_INVOICED:
                 return 'facturé';
         }
     }

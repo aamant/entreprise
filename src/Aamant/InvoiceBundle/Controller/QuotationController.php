@@ -35,7 +35,7 @@ class QuotationController extends Controller
         $increment = $this->getDoctrine()
             ->getRepository('AamantInvoiceBundle:Quotation')
             ->getMaxNumber($this->getUser()->getCompany());
-        $quotation->setNumber(date('Ym-').sprintf("%'.04d", ++$increment));
+        $quotation->setNumber(date('Ym-').sprintf("%'.03d", ++$increment));
         $quotation->setDate(Carbon::now());
 
         $form = $this->createForm(new QuotationType(), $quotation);

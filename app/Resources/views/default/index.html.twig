@@ -5,19 +5,21 @@
         <div class="col-sm-6">
             <div class="panel panel-primary">
                 <!-- Default panel contents -->
-                <div class="panel-heading">Reste à facturer: {{ wait|number_format(2, ',', '.') }} €</div>
+                <div class="panel-heading">Devis en cours : {{ wait|number_format(2, ',', '.') }} €</div>
 
                 <!-- Table -->
                 <table class="table">
                     <tr>
                         <th>Devis</th>
                         <th>Client</th>
+                        <th>Montant</th>
                         <th>Reste à facturer</th>
                     </tr>
                     {% for quotation in quotations %}
                     <tr>
                         <td>{{ quotation.number }}</td>
                         <td>{{ quotation.customer.name }}</td>
+                        <td>{{ quotation.total|number_format(2, ',', '.') }} €</td>
                         <td>{{ (quotation.total - quotation.getBilled())|number_format(2, ',', '.') }} €</td>
                     </tr>
                     {% endfor %}
@@ -27,22 +29,84 @@
         <div class="col-sm-6">
             <div class="panel panel-primary">
                 <!-- Default panel contents -->
-                <div class="panel-heading">Reste à encaisser: {{ paid|number_format(2, ',', '.') }} €</div>
+                <div class="panel-heading">Facture en cours : {{ paid|number_format(2, ',', '.') }} €</div>
 
                 <!-- Table -->
                 <table class="table">
                     <tr>
                         <th>Facture</th>
                         <th>Client</th>
+                        <th>Montant</th>
                         <th>Reste à payer</th>
+                        <th>&nbsp;</th>
                     </tr>
                     {% for invoice in invoices %}
                         <tr>
                             <td>{{ invoice.number }}</td>
                             <td>{{ invoice.customer.name }}</td>
+                            <td>{{ invoice.total|number_format(2, ',', '.') }} €</td>
                             <td>{{ (invoice.total - invoice.getPaid())|number_format(2, ',', '.') }} €</td>
+                            <td>
+                                {% if (date('-1week') > date(invoice.date)) %}
+                                    <span class="label label-danger">Retard</span>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-primary">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Chiffre d'affaire</div>
+
+                <!-- Table -->
+                <table class="table table-bordered" style="text-align: right">
+                    <tr>
+                        <th style="text-align: center">Année</th>
+                        <th style="text-align: center">Janvier</th>
+                        <th style="text-align: center">Février</th>
+                        <th style="text-align: center">Mars</th>
+                        <th style="text-align: center">Avril</th>
+                        <th style="text-align: center">Mai</th>
+                        <th style="text-align: center">Juin</th>
+                        <th style="text-align: center">Juillet</th>
+                        <th style="text-align: center">Aout</th>
+                        <th style="text-align: center">Septembre</th>
+                        <th style="text-align: center">Octobre</th>
+                        <th style="text-align: center">Novembre</th>
+                        <th style="text-align: center">Decembre</th>
+                    </tr>
+                    <tr>
+                        <th>2015</th>
+                        {% for month in one_year %}
+                        <td>
+                            {{ month.total|number_format(2, ',', '.') }} €<br/>
+                            <span class="blue">{{ month.cumule|number_format(2, ',', '.') }} €</span>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>2014</th>
+                        {% for month in two_year %}
+                            <td>
+                                {{ month.total|number_format(2, ',', '.') }} €<br/>
+                                <span class="blue">{{ month.cumule|number_format(2, ',', '.') }} €</span>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>2013</th>
+                        {% for month in three_year %}
+                            <td>
+                                {{ month.total|number_format(2, ',', '.') }} €<br/>
+                                <span class="blue">{{ month.cumule|number_format(2, ',', '.') }} €</span>
+                            </td>
+                        {% endfor %}
+                    </tr>
                 </table>
             </div>
         </div>

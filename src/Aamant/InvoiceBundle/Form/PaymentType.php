@@ -25,7 +25,11 @@ class PaymentType extends AbstractType
             }
         ));
         $builder->add('date', 'date', ['input' => 'datetime']);
+        $builder->add('method', 'choice', [
+            'choices'   => array('check' => 'Chèque', 'transfer' => 'Virement', 'cart' => 'CB', 'money' => 'Espèce'),
+        ]);
         $builder->add('total');
+        $builder->add('comment');
 
         $builder->add('save', 'submit', ['label' => 'Enregistrer']);
     }

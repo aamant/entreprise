@@ -29,6 +29,7 @@ class InvoiceType extends AbstractType
             'property' => 'fullname',
             'empty_value' => 'Choisissez un devis',
             'label' => 'Devis',
+            'required' => false,
             'query_builder' => function(EntityRepository $er) use($company) {
                 return $er->createQueryBuilder('q')
                     ->join('q.company', 'c')

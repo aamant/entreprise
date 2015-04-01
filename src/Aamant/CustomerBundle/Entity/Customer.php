@@ -29,8 +29,7 @@ class Customer
     protected $gender;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Length(max="100")
      */
     protected $name;
@@ -50,8 +49,7 @@ class Customer
     protected $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max="255")
      */
     protected $address;
@@ -63,15 +61,13 @@ class Customer
     protected $address_comp;
 
     /**
-     * @ORM\Column(type="string", length=10)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=10, nullable=true)
      * @Assert\Length(max="10")
      */
     protected $postcode;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Length(max="100")
      */
     protected $city;
@@ -84,8 +80,7 @@ class Customer
     protected $country;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Email
      */
     protected $email;

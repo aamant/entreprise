@@ -12,7 +12,7 @@ class Status
         $entity = $args->getEntity();
         if ($entity instanceof Payment){
             $invoice = $entity->getInvoice();
-            if ($entity->getTotal() >= $invoice->getTotal()){
+            if ($invoice->getPaid() >= $invoice->getTotal()){
                 $invoice->setStatus(Invoice::STATUS_CLOSE);
             } else {
                 $invoice->setStatus(Invoice::STATUS_PARTIAL);

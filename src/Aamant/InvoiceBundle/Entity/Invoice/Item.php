@@ -30,7 +30,7 @@ class Item
     protected $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      * @Assert\NotBlank()
      */
     protected $quantity;

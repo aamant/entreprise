@@ -269,7 +269,7 @@ class Invoice
     public function create($increment)
     {
         $this->setDate(Carbon::now());
-        $this->setNumber(date('Ym').'-'.sprintf("%'.04d", $increment));
+        $this->setNumber(date('Ym').'-'.sprintf("%'.03d", $increment));
     }
 
     /**

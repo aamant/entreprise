@@ -35,12 +35,12 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
                             {% if (quotation.status == 'wait') %}
-                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}" target="_blank">Accepter</a></li>
-                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'refused'}) }}" target="_blank">Refuser</a></li>
+                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Accepter</a></li>
+                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'refused'}) }}">Refuser</a></li>
                             {% elseif (quotation.status == 'accept' or quotation.status == 'partial_invoiced') %}
-                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}" target="_blank">Facturer</a></li>
+                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Facturer</a></li>
                             {% elseif (quotation.status == 'wait' or quotation.status == 'accept') %}
-                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'cancelled'}) }}" target="_blank">Annuler</a></li>
+                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'cancelled'}) }}">Annuler</a></li>
                             {% endif %}
                         </ul>
                     </div>

@@ -4,6 +4,7 @@ namespace Aamant\InvoiceBundle\Entity;
 
 use Aamant\UserBundle\Entity\Company;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * PaymentRepository
@@ -20,10 +21,45 @@ class PaymentRepository extends EntityRepository
                 SELECT payment, customer, invoice FROM AamantInvoiceBundle:Payment payment
                 JOIN payment.customer customer
                 JOIN payment.invoice invoice
+                ORDER BY payment.date DESC
             ');
 
         try {
             return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function paymentPerYear(Company $company)
+    {
+        $query = $this->getEntityManager()->getConnection()->prepare('
+                SELECT YEAR(p.date) as year, SUM(p.total) as total FROM payment p
+                WHERE company_id = :company
+                GROUP BY YEAR(p.date)
+                ORDER BY YEAR(p.date) DESC
+            ');
+        $query->execute(['company' => $company->getId()]);
+
+        try {
+            return $query->fetchAll();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function paymentPerMonthForYear(Company $company, $year)
+    {
+        $query = $this->getEntityManager()->getConnection()->prepare('
+                SELECT MONTH(p.date) as month, SUM(p.total) as total FROM payment p
+                WHERE company_id = :company
+                AND YEAR(p.date) = :year
+                GROUP BY MONTH(p.date)
+            ');
+        $query->execute(['company' => $company->getId(), 'year' => $year]);
+
+        try {
+            return $query->fetchAll();
         } catch (\Doctrine\ORM\NoResultException $e) {
             return null;
         }

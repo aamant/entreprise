@@ -39,10 +39,21 @@ class Payment
     protected $date;
 
     /**
+     * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank()
+     */
+    protected $method;
+
+    /**
      * @ORM\Column(type="decimal", scale=2)
      * @Assert\NotBlank()
      */
     protected $total;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $comment;
 
     /**
      * Get id
@@ -166,5 +177,51 @@ class Payment
     public function getInvoice()
     {
         return $this->invoice;
+    }
+
+    /**
+     * Set method
+     *
+     * @param string $method
+     * @return Payment
+     */
+    public function setMethod($method)
+    {
+        $this->method = $method;
+
+        return $this;
+    }
+
+    /**
+     * Get method
+     *
+     * @return string 
+     */
+    public function getMethod()
+    {
+        return $this->method;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     * @return Payment
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string 
+     */
+    public function getComment()
+    {
+        return $this->comment;
     }
 }
