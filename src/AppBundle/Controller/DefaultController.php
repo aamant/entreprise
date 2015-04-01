@@ -12,6 +12,15 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('default/index.html.twig');
+        $repository = $this->getDoctrine()->getRepository("AamantInvoiceBundle:Quotation");
+        $quotations = $repository->findWaitInvoice($this->getUser()->getCompany());
+        $wait = $repository->getWaitToInvoice($this->getUser()->getCompany());
+
+        $repository = $this->getDoctrine()->getRepository("AamantInvoiceBundle:Invoice");
+        $invoices = $repository->findWaitPaid($this->getUser()->getCompany());
+        $paid = $repository->getWaitToPaid($this->getUser()->getCompany());
+        return $this->render('default/index.html.twig',
+            ['quotations' => $quotations, 'invoices' => $invoices, 'paid' => $paid, 'wait' => $wait]
+        );
     }
 }

@@ -34,8 +34,7 @@ class DefaultController extends Controller
                 ->findFullById($id);
         } else {
             $invoice = new Invoice();
-            $user = $this->get('security.context')->getToken()->getUser();
-            $invoice->setCompany($user->getCompany());
+            $invoice->setCompany($this->getUser()->getCompany());
             $invoice->addItem(new Invoice\Item());
         }
 
@@ -45,7 +44,7 @@ class DefaultController extends Controller
         if ($form->isValid()){
 
             if ($form->get('create')->isClicked()){
-                $config = $user->getCompany()->getConfig();
+                $config = $this->getUser()->getCompany()->getConfig();
                 $increment = $config->getInvoiceIncrement();
 
                 $invoice->create($increment);

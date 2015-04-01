@@ -1,5 +1,50 @@
 {% extends 'layout/layout.html.twig' %}
 
 {% block main %}
-    Homepage.
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-primary">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Reste à facturer: {{ wait|number_format(2, ',', '.') }} €</div>
+
+                <!-- Table -->
+                <table class="table">
+                    <tr>
+                        <th>Devis</th>
+                        <th>Client</th>
+                        <th>Reste à facturer</th>
+                    </tr>
+                    {% for quotation in quotations %}
+                    <tr>
+                        <td>{{ quotation.number }}</td>
+                        <td>{{ quotation.customer.name }}</td>
+                        <td>{{ (quotation.total - quotation.getBilled())|number_format(2, ',', '.') }} €</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-primary">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Reste à encaisser: {{ paid|number_format(2, ',', '.') }} €</div>
+
+                <!-- Table -->
+                <table class="table">
+                    <tr>
+                        <th>Facture</th>
+                        <th>Client</th>
+                        <th>Reste à payer</th>
+                    </tr>
+                    {% for invoice in invoices %}
+                        <tr>
+                            <td>{{ invoice.number }}</td>
+                            <td>{{ invoice.customer.name }}</td>
+                            <td>{{ (invoice.total - invoice.getPaid())|number_format(2, ',', '.') }} €</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}

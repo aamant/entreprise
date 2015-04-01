@@ -36,6 +36,45 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
+     * @param Company $company
+     * @return array|null
+     */
+    public function findWaitPaid(Company $company)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery("
+                SELECT i, c, p FROM AamantInvoiceBundle:Invoice i
+                JOIN i.customer c
+                LEFT JOIN i.payments p
+                WHERE i.company = :company
+                AND i.status IN ('wait', 'partial')
+            ")->setParameter('company', $company);
+
+        try {
+            return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function getWaitToPaid(Company $company)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery("
+                SELECT (SUM(i.total) - SUM(p.total)) as total FROM AamantInvoiceBundle:Invoice i
+                LEFT JOIN i.payments p
+                WHERE i.company = :company
+                AND i.status IN ('wait', 'partial')
+            ")->setParameter('company', $company);
+
+        try {
+            return $query->getSingleScalarResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    /**
      * @param $id
      * @return mixed|null
      * @throws \Doctrine\ORM\NonUniqueResultException

@@ -293,7 +293,9 @@ class Quotation
     public function getPaid()
     {
         $value = 0;
-
+        foreach ($this->getInvoices() as $invoice){
+            $value += $invoice->getPaid();
+        }
         return $value;
     }
 
