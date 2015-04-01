@@ -24,7 +24,6 @@ class AppKernel extends Kernel
             new Genemu\Bundle\FormBundle\GenemuFormBundle(),
             new Aamant\InvoiceBundle\AamantInvoiceBundle(),
             new Aamant\SettingsBundle\AamantSettingsBundle(),
-            new Slik\DompdfBundle\SlikDompdfBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
         );
 
