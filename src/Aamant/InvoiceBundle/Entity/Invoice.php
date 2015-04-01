@@ -362,8 +362,20 @@ class Invoice
         return $this->status;
     }
 
+    /**
+     * @return string
+     */
     public function getFullname()
     {
         return $this->getNumber().' / '.$this->getCustomer()->getName().' / '.$this->getTotal();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocalizedDate()
+    {
+        setlocale(LC_TIME, 'fr_FR.UTF-8');
+        return Carbon::instance($this->getDate())->formatLocalized('%d %B %Y');
     }
 }

@@ -21,6 +21,7 @@ class PaymentType extends AbstractType
                 return $er->createQueryBuilder('i')
                     ->join('i.company', 'c')
                     ->where('c.id = :id')
+                    ->andWhere("i.status IN ('wait', 'partial')")
                     ->setParameter('id', $company->getId());
             }
         ));

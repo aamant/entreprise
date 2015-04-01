@@ -5,10 +5,7 @@
         <title>Facture {{ invoice.number }}</title>
         <link rel="stylesheet" href="{{ base_path }}/css/bootstrap.css">
         <style>
-            @import url(http://fonts.googleapis.com/css?family=Bree+Serif);
-            body, h1, h2, h3, h4, h5, h6{
-                font-family: 'Bree Serif', serif;
-            }
+            
         </style>
     </head>
 
@@ -38,6 +35,7 @@
             <div class="row">
                 <div class="col-xs-6">
                     <h1>Facture n° {{ invoice.number }}</h1>
+                    <p>Date: {{ invoice.getLocalizedDate() }}</p>
                     <br/>
                 </div>
             </div>

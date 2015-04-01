@@ -28,6 +28,7 @@ class DefaultController extends Controller
      */
     public function invoiceAction(Request $request, $id = null)
     {
+        echo $request->getLocale();
         $em = $this->getDoctrine()->getManager();
         if ($id){
             $invoice = $em->getRepository('AamantInvoiceBundle:Invoice')
@@ -79,7 +80,7 @@ class DefaultController extends Controller
      * @Route("invoice/view/{id}", name="invoice_view")
      * @Template()
      */
-    public function viewAction($id)
+    public function viewAction(Request $request, $id)
     {
         $invoice = $this->getDoctrine()
             ->getRepository('AamantInvoiceBundle:Invoice')

@@ -34,6 +34,7 @@ class InvoiceType extends AbstractType
                 return $er->createQueryBuilder('q')
                     ->join('q.company', 'c')
                     ->where('c.id = :id')
+                    ->andWhere("q.status IN ('accept', 'partial_invoiced', 'wait')")
                     ->setParameter('id', $company->getId());
             }
         ));

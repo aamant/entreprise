@@ -39,6 +39,7 @@
                                 <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'refused'}) }}">Refuser</a></li>
                             {% elseif (quotation.status == 'accept' or quotation.status == 'partial_invoiced') %}
                                 <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Facturer</a></li>
+                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'closed'}) }}">Cloturer</a></li>
                             {% elseif (quotation.status == 'wait' or quotation.status == 'accept') %}
                                 <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'cancelled'}) }}">Annuler</a></li>
                             {% endif %}

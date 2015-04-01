@@ -301,6 +301,7 @@ class Quotation
 
     public function getFullname()
     {
-        return $this->getNumber().' / '.$this->getCustomer()->getName().' / '.$this->getTotal();
+        return $this->getNumber().' / '.$this->getCustomer()->getName().' / '
+            .$this->getTotal().' / '.($this->getTotal() - $this->getPaid());
     }
 }

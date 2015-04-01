@@ -74,6 +74,11 @@ class QuotationController extends Controller
             case 'refused':
                 $quotation->setStatus('refused');
                 break;
+            case 'closed':
+                if ($quotation->getStatus() == Quotation::STATUS_PARTIAL_INVOICED){
+                    $quotation->setStatus('invoiced');
+                }
+                break;
         }
 
         $em->persist($quotation);
