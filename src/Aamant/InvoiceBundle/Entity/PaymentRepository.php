@@ -64,4 +64,20 @@ class PaymentRepository extends EntityRepository
             return null;
         }
     }
+
+    public function paymentPerYearAndMonth(Company $company)
+    {
+        $query = $this->getEntityManager()->getConnection()->prepare('
+                SELECT YEAR(p.date) as year, MONTH(p.date) as month, SUM(p.total) as total FROM payment p
+                WHERE company_id = :company
+                GROUP BY YEAR(p.date), MONTH(p.date)
+            ');
+        $query->execute(['company' => $company->getId()]);
+
+        try {
+            return $query->fetchAll();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
 }

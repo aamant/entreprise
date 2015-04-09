@@ -111,4 +111,49 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div id="graphyear"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div id="cumul"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    new Morris.Line({
+        element: 'graphyear',
+        parseTime: false,
+        data: [
+            {% for item in stats %}
+                { month: '{{ month[loop.index] }}', 2015: "{{ item.2015|number_format(2, '.', '') }}", 2014: "{{ item.2014|number_format(2, '.', '') }}", 2013: "{{ item.2013|number_format(2, '.', '') }}" },
+            {% endfor %}
+        ],
+        xkey: 'month',
+        ykeys: ['2015', '2014', '2013'],
+        labels: ['2015', '2014', '2013'],
+        lineColors: ['#428bca', '#faebcc', '#d9edf7']
+    });
+    new Morris.Line({
+        element: 'cumul',
+        parseTime: false,
+        data: [
+            {% for item in cumul %}
+            { month: '{{ month[loop.index] }}', 2015: "{{ item.2015|number_format(2, '.', '') }}", 2014: "{{ item.2014|number_format(2, '.', '') }}", 2013: "{{ item.2013|number_format(2, '.', '') }}" },
+            {% endfor %}
+        ],
+        xkey: 'month',
+        ykeys: ['2015', '2014', '2013'],
+        labels: ['2015', '2014', '2013'],
+        lineColors: ['#428bca', '#faebcc', '#d9edf7']
+    });
+</script>
 {% endblock %}
