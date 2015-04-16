@@ -77,7 +77,7 @@
                 <tbody>
                 {% for item in invoice.items %}
                 <tr>
-                    <td>{{ item.name }}</td>
+                    <td>{{ item.name|nl2br }}</td>
                     <td class="text-right">{{ item.quantity }}</td>
                     <td class="text-right">{{ item.price|number_format(2, '.', ',') }} €</td>
                     <td class="text-right">{{ item.total|number_format(2, '.', ',') }} €</td>

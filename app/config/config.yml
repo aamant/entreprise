@@ -85,3 +85,9 @@ knp_snappy:
         enabled:    true
         binary:     "%kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64"
         options:    []
+
+services:
+    text.twig.extension:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            -  { name: twig.extension }
