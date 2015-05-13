@@ -56,6 +56,12 @@ class Invoice
     protected $date;
 
     /**
+     * @ORM\Column(type="decimal", scale=2, options={"default":0})
+     * @Assert\NotBlank()
+     */
+    protected $advance = 0;
+
+    /**
      * @ORM\Column(type="decimal", scale=2)
      * @Assert\NotBlank()
      */
@@ -114,6 +120,22 @@ class Invoice
     public function getNumber()
     {
         return $this->number;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAdvance()
+    {
+        return $this->advance;
+    }
+
+    /**
+     * @param mixed $advance
+     */
+    public function setAdvance($advance)
+    {
+        $this->advance = $advance;
     }
 
     /**
@@ -266,10 +288,24 @@ class Invoice
         return $this->date;
     }
 
+    /**
+     * @param $increment
+     * @return $this
+     */
     public function create($increment)
     {
         $this->setDate(Carbon::now());
         $this->setNumber(date('Ym').'-'.sprintf("%'.03d", $increment));
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function createDraft()
+    {
+        $this->setDate(Carbon::now());
+        return $this;
     }
 
     /**
@@ -376,6 +412,9 @@ class Invoice
     public function getLocalizedDate()
     {
         setlocale(LC_TIME, 'fr_FR.UTF-8');
-        return Carbon::instance($this->getDate())->formatLocalized('%d %B %Y');
+        if ($this->getDate())
+            return Carbon::instance($this->getDate())->formatLocalized('%d %B %Y');
+        else
+            return Carbon::now()->formatLocalized('%d %B %Y');
     }
 }

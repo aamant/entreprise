@@ -10,6 +10,7 @@
         var node = $(el);
         Invoice.itemsContainer = node.find('.items >tbody');
         Invoice.sub_total = node.find('#invoice_sub_total');
+        Invoice.advance = node.find('#invoice_advance');
         Invoice.total = node.find('#invoice_total');
 
         node.find('table > tbody').children().each(function(key, element){
@@ -38,13 +39,14 @@
                     invoice_total = 0;
                 }
             });
-
-            Invoice.total.val(parseFloat(invoice_total));
+            console.log('advance ' + Invoice.advance.val());
             Invoice.sub_total.val(invoice_total);
+            Invoice.total.val(parseFloat(invoice_total) - parseFloat(Invoice.advance.val()));
         }
 
         $element.find('[id$=_quantity]').change(calculate);
         $element.find('[id$=_price]').change(calculate);
+        Invoice.advance.change(calculate);
     }
 
     $.fn.invoice = function(option){

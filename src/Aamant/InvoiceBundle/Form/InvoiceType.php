@@ -44,6 +44,7 @@ class InvoiceType extends AbstractType
             'by_reference' => false,
         ));
         $builder->add('sub_total', 'text', ['label' => 'Sous-total']);
+        $builder->add('advance', 'text', ['label' => 'Acompte']);
         $builder->add('total');
 
         if (!$invoice->getNumber()){

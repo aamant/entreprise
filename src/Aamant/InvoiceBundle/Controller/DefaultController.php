@@ -51,6 +51,8 @@ class DefaultController extends Controller
                 $invoice->create($increment);
                 $config->setInvoiceIncrement(++$increment);
                 $em->persist($config);
+            } else {
+                $invoice->createDraft();
             }
 
             $em->persist($invoice);

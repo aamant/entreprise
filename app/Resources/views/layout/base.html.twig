@@ -11,7 +11,7 @@
             '%kernel.root_dir%/../vendor/twbs/bootstrap/less/bootstrap.less'
             '%kernel.root_dir%/Resources/less/main.less'
             '@AamantUserBundle/Resources/public/less/user.less'
-            filter='less,cssrewrite'
+            filter='less' filter='cssrewrite'
             output='css/compiled/main.css' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
@@ -42,7 +42,7 @@
     {% javascripts
     '%kernel.root_dir%/../vendor/jquery/jquery/jquery-1.11.1.js'
     '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js'
-    '@AamantInvoiceBundle/Resources/script/*.js'
+    '@AamantInvoiceBundle/Resources/script/invoice.js'
     output='js/compiled/main.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}

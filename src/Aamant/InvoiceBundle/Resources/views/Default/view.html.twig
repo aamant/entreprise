@@ -79,8 +79,8 @@
                 <tr>
                     <td>{{ item.name|nl2br }}</td>
                     <td class="text-right">{{ item.quantity }}</td>
-                    <td class="text-right">{{ item.price|number_format(2, '.', ',') }} €</td>
-                    <td class="text-right">{{ item.total|number_format(2, '.', ',') }} €</td>
+                    <td class="text-right">{{ item.price|number_format(2, ',', ' ') }} €</td>
+                    <td class="text-right">{{ item.total|number_format(2, ',', ' ') }} €</td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -88,14 +88,44 @@
             <div class="row text-right">
                 <div class="col-xs-2 col-xs-offset-8">
                     <p>
-                        <strong>
+                        <span>
                             Total HT : <br>
+                        </span>
+                    </p>
+                </div>
+                <div class="col-xs-2">
+                    <span>
+                        {{ invoice.subTotal|number_format(2, ',', ' ') }} € <br>
+                    </span>
+                </div>
+            </div>
+            {% if invoice.advance > 0 %}
+            <div class="row text-right">
+                <div class="col-xs-2 col-xs-offset-8">
+                    <p>
+                        <span>
+                            Acompte : <br>
+                        </span>
+                    </p>
+                </div>
+                <div class="col-xs-2">
+                    <span>
+                        {{ invoice.advance|number_format(2, ',', ' ') }} € <br>
+                    </span>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row text-right">
+                <div class="col-xs-2 col-xs-offset-8">
+                    <p>
+                        <strong>
+                            NET A PAYER : <br>
                         </strong>
                     </p>
                 </div>
                 <div class="col-xs-2">
                     <strong>
-                        {{ invoice.total|number_format(2, '.', ',') }} € <br>
+                        {{ invoice.total|number_format(2, ',', ' ') }} € <br>
                     </strong>
                 </div>
             </div>

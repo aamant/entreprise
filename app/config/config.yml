@@ -36,6 +36,7 @@ assetic:
     use_controller: false
     bundles:        [ ]
     #java: /usr/bin/java
+    node: /usr/bin/nodejs
     filters:
         cssrewrite: ~
         less:

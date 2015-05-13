@@ -62,7 +62,7 @@ class InvoiceRepository extends EntityRepository
     {
         $query = $this->getEntityManager()
             ->createQuery("
-                SELECT (SUM(i.total) - SUM(p.total)) as total FROM AamantInvoiceBundle:Invoice i
+                SELECT (SUM(i.total) - COALESCE(SUM(p.total), 0)) as total FROM AamantInvoiceBundle:Invoice i
                 LEFT JOIN i.payments p
                 WHERE i.company = :company
                 AND i.status IN ('wait', 'partial')

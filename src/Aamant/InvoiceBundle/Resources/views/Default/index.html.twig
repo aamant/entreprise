@@ -29,7 +29,9 @@
                 <td>{{ invoice.total }}</td>
                 <td>{{ invoice.getPaid()|number_format(2, '.', ',') }} €</td>
                 <td>
-                    {% if invoice.status != 'close' and date('-1week') > date(invoice.date)  %}
+                    {% if invoice.number == null %}
+                        <span class="label label-warning">Brouillon</span>
+                    {% elseif invoice.status != 'close' and date('-1week') > date(invoice.date)  %}
                         <span class="label label-danger">Retard de paiement</span>
                     {% elseif (invoice.status != 'close') %}
                         <span class="label label-warning">Attente de paiement</span>

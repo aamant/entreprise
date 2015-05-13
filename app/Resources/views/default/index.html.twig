@@ -35,6 +35,7 @@
                 <table class="table">
                     <tr>
                         <th>Facture</th>
+                        <th>Devis</th>
                         <th>Client</th>
                         <th>Montant</th>
                         <th>Reste à payer</th>
@@ -43,6 +44,7 @@
                     {% for invoice in invoices %}
                         <tr>
                             <td>{{ invoice.number }}</td>
+                            <td>{{ invoice.quotation ? invoice.quotation.number : '' }}</td>
                             <td>{{ invoice.customer.name }}</td>
                             <td>{{ invoice.total|number_format(2, ',', '.') }} €</td>
                             <td>{{ (invoice.total - invoice.getPaid())|number_format(2, ',', '.') }} €</td>
