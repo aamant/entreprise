@@ -77,6 +77,8 @@ class QuotationController extends Controller
             case 'closed':
                 if ($quotation->getStatus() == Quotation::STATUS_PARTIAL_INVOICED){
                     $quotation->setStatus('invoiced');
+                } elseif ($quotation->getStatus() == Quotation::STATUS_ACCEPT) {
+                    $quotation->setStatus(Quotation::STATUS_CANCELLED);
                 }
                 break;
         }
