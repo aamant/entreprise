@@ -18,3 +18,8 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    uglifyjs: /usr/bin/uglifyjs
+    uglifycss: /usr/bin/uglifycss
+    node: /usr/bin/node
+    node_paths: [/usr/lib/node_modules]
