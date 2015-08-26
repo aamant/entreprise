@@ -1,5 +1,6 @@
 <?php namespace Aamant\InvoiceBundle\Form;
 
+use Aamant\InvoiceBundle\Form\Quotation\ItemType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,6 +26,11 @@ class QuotationType extends AbstractType
         ));
         $builder->add('number', 'text', ['label' => 'Numéro']);
         $builder->add('date', 'date', ['input' => 'datetime']);
+        $builder->add('items', 'collection', array(
+            'type' => new ItemType(),
+            'allow_add' => true,
+            'by_reference' => false,
+        ));
         $builder->add('total');
 
         $builder->add('save', 'submit', ['label' => 'Enregistrer']);

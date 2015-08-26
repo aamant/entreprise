@@ -37,6 +37,7 @@ class QuotationController extends Controller
             ->getMaxNumber($this->getUser()->getCompany());
         $quotation->setNumber(date('Ym-').sprintf("%'.03d", ++$increment));
         $quotation->setDate(Carbon::now());
+        $quotation->addItem(new Quotation\Item());
 
         $form = $this->createForm(new QuotationType(), $quotation);
         $form->handleRequest($request);
@@ -64,6 +65,10 @@ class QuotationController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $quotation = $em->getRepository('AamantInvoiceBundle:Quotation')->find($id);
+        if ($quotation->getCompany()->getId() != $this->getUser()->getCompany()->getId()){
+            $this->createAccessDeniedException();
+        }
+
         switch ($status){
             case 'accept':
                 $quotation->setStatus('accept');
@@ -91,5 +96,25 @@ class QuotationController extends Controller
             'Vos changements ont été sauvegardés!'
         );
         return $this->redirect($this->generateUrl('invoice_quotations_list'));
+    }
+
+    /**
+     * @param $id
+     * @return array
+     *
+     * @Route("quotation/view/{id}", name="quotation.view")
+     * @Template()
+     */
+    public function viewAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $quotation = $em->getRepository('AamantInvoiceBundle:Quotation')->find($id);
+        if ($quotation->getCompany()->getId() != $this->getUser()->getCompany()->getId()){
+            $this->createAccessDeniedException();
+        }
+
+        return [
+            'quotation' => $quotation
+        ];
     }
 }

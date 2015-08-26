@@ -30,20 +30,20 @@
                     <td>{{ quotation.getBilled()|number_format(2, '.', ',') }} €</td>
                     <td>{{ quotation.getPaid()|number_format(2, '.', ',') }} €</td>
                     <td style="width: 100px">
-                        <div class="dropdown">
-                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                Action
+                        <div class="btn-group">
+                            <a type="button" class="btn btn-default btn-sm" href="{{ path('quotation.view', {'id': quotation.id}) }}">Détail</a>
+                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
                                 {% if (quotation.status == 'wait') %}
-                                    <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Accepter</a></li>
-                                    <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'refused'}) }}">Refuser</a></li>
+                                    <li role="button"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Accepter</a></li>
+                                    <li role="button"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'refused'}) }}">Refuser</a></li>
                                 {% elseif (quotation.status == 'accept' or quotation.status == 'partial_invoiced') %}
-                                    <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Facturer</a></li>
-                                    <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'closed'}) }}">Cloturer</a></li>
+                                    <li role="button"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Facturer</a></li>
+                                    <li role="button"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'closed'}) }}">Cloturer</a></li>
                                 {% elseif (quotation.status == 'wait' or quotation.status == 'accept') %}
-                                    <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'cancelled'}) }}">Annuler</a></li>
+                                    <li role="button"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'cancelled'}) }}">Annuler</a></li>
                                 {% endif %}
                             </ul>
                         </div>

@@ -66,11 +66,17 @@ class Quotation
     protected $status;
 
     /**
+     * @ORM\OneToMany(targetEntity="Aamant\InvoiceBundle\Entity\Quotation\Item", mappedBy="quotation", cascade={"persist"})
+     */
+    protected $items;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->invoices = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->items = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -303,5 +309,39 @@ class Quotation
     {
         return $this->getNumber().' / '.$this->getCustomer()->getName().' / '
             .$this->getTotal().' / '.($this->getTotal() - $this->getPaid());
+    }
+
+    /**
+     * Add item
+     *
+     * @param \Aamant\InvoiceBundle\Entity\Quotation\Item $item
+     * @return Quotation
+     */
+    public function addItem(\Aamant\InvoiceBundle\Entity\Quotation\Item $item)
+    {
+        $item->setQuotation($this);
+        $this->items->add($item);
+
+        return $this;
+    }
+
+    /**
+     * Remove items
+     *
+     * @param \Aamant\InvoiceBundle\Entity\Quotation\Item $items
+     */
+    public function removeItem(\Aamant\InvoiceBundle\Entity\Quotation\Item $items)
+    {
+        $this->items->removeElement($items);
+    }
+
+    /**
+     * Get items
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getItems()
+    {
+        return $this->items;
     }
 }
