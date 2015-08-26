@@ -51,6 +51,29 @@ class QuotationRepository extends EntityRepository
     }
 
     /**
+     *
+     * @param Company $company
+     * @return array|null
+     */
+    public function findWaitInvoiceValue(Company $company)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery("
+                SELECT q.total - SUM(i.total) FROM AamantInvoiceBundle:Quotation q
+                LEFT JOIN q.invoices i
+                WHERE q.company = :company
+                AND q.status IN ('accept', 'partial_invoiced')
+                GROUP BY q.total
+            ")->setParameter('company', $company);
+
+        try {
+            return $query->getSingleScalarResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    /**
      * @param Company $company
      * @return int
      */

@@ -1,3 +1,8 @@
+aamant_statistic:
+    resource: "@AamantStatisticBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 aamant_settings:
     resource: "@AamantSettingsBundle/Controller/"
     type:     annotation

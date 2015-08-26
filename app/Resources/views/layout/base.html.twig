@@ -8,7 +8,6 @@
 
     {% block stylesheets %}
         {% stylesheets
-            '%kernel.root_dir%/../vendor/twbs/bootstrap/less/bootstrap.less'
             '%kernel.root_dir%/Resources/less/main.less'
             '@AamantUserBundle/Resources/public/less/user.less'
             filter='less' filter='cssrewrite'
@@ -42,12 +41,11 @@
     {% javascripts
     '%kernel.root_dir%/../vendor/jquery/jquery/jquery-1.11.1.js'
     '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js'
+    '%kernel.root_dir%/Resources/bower_components/Chart.js/Chart.js'
     '@AamantInvoiceBundle/Resources/script/invoice.js'
     output='js/compiled/main.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 {% endblock %}
 {% block script %}{% endblock %}
 </body>

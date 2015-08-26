@@ -48,6 +48,22 @@ class PaymentRepository extends EntityRepository
         }
     }
 
+    public function paymentForCurrentYear(Company $company)
+    {
+        $query = $this->getEntityManager()->getConnection()->prepare('
+                SELECT SUM(p.total) as total FROM payment p
+                WHERE company_id = :company
+                AND YEAR(p.date) = YEAR(CURRENT_DATE)
+            ');
+        $query->execute(['company' => $company->getId()]);
+
+        try {
+            return $query->fetchColumn();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
     public function paymentPerMonthForYear(Company $company, $year)
     {
         $query = $this->getEntityManager()->getConnection()->prepare('
@@ -70,6 +86,7 @@ class PaymentRepository extends EntityRepository
         $query = $this->getEntityManager()->getConnection()->prepare('
                 SELECT YEAR(p.date) as year, MONTH(p.date) as month, SUM(p.total) as total FROM payment p
                 WHERE company_id = :company
+                AND YEAR(p.date) > YEAR(CURRENT_DATE) - 2
                 GROUP BY YEAR(p.date), MONTH(p.date)
             ');
         $query->execute(['company' => $company->getId()]);

@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new Aamant\InvoiceBundle\AamantInvoiceBundle(),
             new Aamant\SettingsBundle\AamantSettingsBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
+            new Aamant\StatisticBundle\AamantStatisticBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

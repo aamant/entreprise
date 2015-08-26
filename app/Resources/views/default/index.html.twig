@@ -2,8 +2,13 @@
 
 {% block main %}
     <div class="row">
-        <div class="col-sm-6">
-            <div class="panel panel-primary">
+        <div class="col-sm-4">
+            <h2 class="text-center">Chiffre d'affaire</h2>
+            <canvas id="doughnut"></canvas>
+        </div>
+        <div class="col-sm-8">
+            <h2 class="text-center">Encours</h2>
+            <div class="panel panel-stat">
                 <!-- Default panel contents -->
                 <div class="panel-heading">Devis en cours : {{ wait|number_format(2, ',', '.') }} €</div>
 
@@ -16,18 +21,16 @@
                         <th>Reste à facturer</th>
                     </tr>
                     {% for quotation in quotations %}
-                    <tr>
-                        <td>{{ quotation.number }}</td>
-                        <td>{{ quotation.customer.name }}</td>
-                        <td>{{ quotation.total|number_format(2, ',', '.') }} €</td>
-                        <td>{{ (quotation.total - quotation.getBilled())|number_format(2, ',', '.') }} €</td>
-                    </tr>
+                        <tr>
+                            <td>{{ quotation.number }}</td>
+                            <td>{{ quotation.customer.name }}</td>
+                            <td>{{ quotation.total|number_format(2, ',', '.') }} €</td>
+                            <td>{{ (quotation.total - quotation.getBilled())|number_format(2, ',', '.') }} €</td>
+                        </tr>
                     {% endfor %}
                 </table>
             </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="panel panel-primary">
+            <div class="panel panel-stat">
                 <!-- Default panel contents -->
                 <div class="panel-heading">Facture en cours : {{ paid|number_format(2, ',', '.') }} €</div>
 
@@ -60,70 +63,14 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12">
-            <div class="panel panel-primary">
-                <!-- Default panel contents -->
-                <div class="panel-heading">Chiffre d'affaire</div>
-
-                <!-- Table -->
-                <table class="table table-bordered" style="text-align: right">
-                    <tr>
-                        <th style="text-align: center">Année</th>
-                        <th style="text-align: center">Janvier</th>
-                        <th style="text-align: center">Février</th>
-                        <th style="text-align: center">Mars</th>
-                        <th style="text-align: center">Avril</th>
-                        <th style="text-align: center">Mai</th>
-                        <th style="text-align: center">Juin</th>
-                        <th style="text-align: center">Juillet</th>
-                        <th style="text-align: center">Aout</th>
-                        <th style="text-align: center">Septembre</th>
-                        <th style="text-align: center">Octobre</th>
-                        <th style="text-align: center">Novembre</th>
-                        <th style="text-align: center">Decembre</th>
-                    </tr>
-                    <tr>
-                        <th>2015</th>
-                        {% for month in one_year %}
-                        <td>
-                            {{ month.total|number_format(2, ',', '.') }} €<br/>
-                            <span class="blue">{{ month.cumule|number_format(2, ',', '.') }} €</span>
-                        </td>
-                        {% endfor %}
-                    </tr>
-                    <tr>
-                        <th>2014</th>
-                        {% for month in two_year %}
-                            <td>
-                                {{ month.total|number_format(2, ',', '.') }} €<br/>
-                                <span class="blue">{{ month.cumule|number_format(2, ',', '.') }} €</span>
-                            </td>
-                        {% endfor %}
-                    </tr>
-                    <tr>
-                        <th>2013</th>
-                        {% for month in three_year %}
-                            <td>
-                                {{ month.total|number_format(2, ',', '.') }} €<br/>
-                                <span class="blue">{{ month.cumule|number_format(2, ',', '.') }} €</span>
-                            </td>
-                        {% endfor %}
-                    </tr>
-                </table>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <canvas id="recipeByMonth"></canvas>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-6">
             <div class="panel panel-default">
-                <div id="graphyear"></div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="panel panel-default">
-                <div id="cumul"></div>
+                <canvas id="recipeAnnualPerMonth"></canvas>
             </div>
         </div>
     </div>
@@ -131,31 +78,59 @@
 
 {% block script %}
 <script>
-    new Morris.Line({
-        element: 'graphyear',
-        parseTime: false,
-        data: [
-            {% for item in stats %}
-                { month: '{{ month[loop.index] }}', 2015: "{{ item.2015|number_format(2, '.', '') }}", 2014: "{{ item.2014|number_format(2, '.', '') }}", 2013: "{{ item.2013|number_format(2, '.', '') }}" },
-            {% endfor %}
-        ],
-        xkey: 'month',
-        ykeys: ['2015', '2014', '2013'],
-        labels: ['2015', '2014', '2013'],
-        lineColors: ['#428bca', '#faebcc', '#d9edf7']
-    });
-    new Morris.Line({
-        element: 'cumul',
-        parseTime: false,
-        data: [
-            {% for item in cumul %}
-            { month: '{{ month[loop.index] }}', 2015: "{{ item.2015|number_format(2, '.', '') }}", 2014: "{{ item.2014|number_format(2, '.', '') }}", 2013: "{{ item.2013|number_format(2, '.', '') }}" },
-            {% endfor %}
-        ],
-        xkey: 'month',
-        ykeys: ['2015', '2014', '2013'],
-        labels: ['2015', '2014', '2013'],
-        lineColors: ['#428bca', '#faebcc', '#d9edf7']
-    });
+    Chart.defaults.global.responsive = true;
+    Chart.defaults.global.maintainAspectRatio = true;
+
+    var ctx = document.getElementById("doughnut").getContext("2d");
+    var Doughnut = new Chart(ctx).Pie({{ doughnut|json_encode|raw }});
+
+    var ctx = document.getElementById("recipeByMonth").getContext("2d");
+    var data = {
+        labels: ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"],
+        datasets: [
+            {
+                label: "",
+                fillColor: "rgba(220,220,220,0.5)",
+                strokeColor: "rgba(220,220,220,0.8)",
+                highlightFill: "rgba(220,220,220,0.75)",
+                highlightStroke: "rgba(220,220,220,1)",
+                data: [{{ recipeByMonth.0|join(', ') }}]
+            },
+            {
+                label: "",
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,0.8)",
+                highlightFill: "rgba(151,187,205,0.75)",
+                highlightStroke: "rgba(151,187,205,1)",
+                data: [{{ recipeByMonth.1|join(', ') }}]
+            }
+        ]
+    };
+    var graph1 = new Chart(ctx).Bar(data);
+
+    var ctx = document.getElementById("recipeAnnualPerMonth").getContext("2d");
+    var data = {
+        labels: ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"],
+        datasets: [
+            {
+                label: "",
+                fillColor: "rgba(220,220,220,0.5)",
+                strokeColor: "rgba(220,220,220,0.8)",
+                highlightFill: "rgba(220,220,220,0.75)",
+                highlightStroke: "rgba(220,220,220,1)",
+                data: [{{ recipeAnnualPerMonth.0|join(', ') }}]
+            },
+            {
+                label: "",
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,0.8)",
+                highlightFill: "rgba(151,187,205,0.75)",
+                highlightStroke: "rgba(151,187,205,1)",
+                data: [{{ recipeAnnualPerMonth.1|join(', ') }}]
+            }
+        ]
+    };
+    Chart.defaults.global.maintainAspectRatio = true;
+    var graph1 = new Chart(ctx).Line(data);
 </script>
 {% endblock %}

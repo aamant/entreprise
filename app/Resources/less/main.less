@@ -1,4 +1,6 @@
-@import "../../../vendor/twbs/bootstrap/less/variables.less";
+@import "../../../vendor/twbs/bootstrap/less/bootstrap.less";
+@import "variables";
+@import "panel";
 
 /*
  * Base structure
@@ -7,6 +9,15 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
   padding-top: 50px;
+}
+
+.navbar-inverse {
+  background-color: @black;
+  border-color: @black;
+  .navbar-nav > li {
+    > a {color: darken(#ffffff, 10)}
+    > a:hover, > a:active {color: @brand-primary}
+  }
 }
 
 
@@ -121,4 +132,6 @@ body {
   color: @brand-primary;
 }
 
-
+.panel-heading {
+  padding: 15px 15px;
+}
