@@ -1,4 +1,4 @@
-@import "../../../vendor/twbs/bootstrap/less/bootstrap.less";
+@import "../bower_components/bootstrap/less/bootstrap.less";
 @import "variables";
 @import "panel";
 
@@ -180,4 +180,11 @@ body {
 
 .btn-default {
   .button-variant(@gray-lighter, @blue, @blue);
+}
+
+.modal-invoice {
+  .modal-dialog {
+    .modal-header {border: none}
+    width: 1100px;
+  }
 }

@@ -1,10 +1,14 @@
-{% extends 'layout/layout.html.twig' %}
-
-{% block menusidebar %}
-    {{ parent() }}
-    <li><a href="{{ url('invoices_list') }}">Retour à la liste</a></li>
-{% endblock %}
-
 {% block main %}
-    <iframe src="{{ path('invoice_view', {'id': id}) }}" frameborder="0" style="width: 90%;height:1300px"></iframe>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-boby">
+                <div class="embed-responsive embed-responsive-4by3">
+                    <iframe class="embed-responsive-item"  src="{{ path('invoice_view', {'id': id}) }}" frameborder="0" class=""></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

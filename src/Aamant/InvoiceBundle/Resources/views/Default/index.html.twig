@@ -23,7 +23,7 @@
                             {{ invoice.quotation.number }}
                         {% endif %}
                     </td>
-                    <td>{{ invoice.customer.name }}</td>
+                    <td><a href="{{ path('customer.view', {'id': invoice.customer.id}) }}">{{ invoice.customer.name }}</a></td>
                     <td>{{ invoice.customer.firstname }} {{ invoice.customer.lastname }}</td>
                     <td>{{ invoice.date|date("d/m/Y") }}</td>
                     <td>{{ invoice.total }}</td>
@@ -40,24 +40,45 @@
                         {% endif %}
                     </td>
                     <td style="width: 100px">
-                        <div class="dropdown">
-                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                Action
+                        <div class="btn-group">
+                            <a type="button" class="btn btn-default" data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">Voir</a>
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
                                 <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown menu action sur les factures">
+                                <li><a data-href="{{ path('invoice.payments', {'id': invoice.id}) }}" data-toggle="modal" data-target="#modal-payment">Voir les paiements</a></li>
                                 {% if invoice.number == '' %}
-                                    <li role="presentation"><a href="{{ path('invoice_invoice', {'id': invoice.id}) }}">Edit</a></li>
-                                    <li role="presentation"><a href="{{ path('invoice_delete') }}">Delete</a></li>
+                                    <li role="presentation"><a href="{{ path('invoice_invoice', {'id': invoice.id}) }}">Editer</a></li>
+                                    <li role="presentation"><a href="{{ path('invoice_delete') }}">Supprimer</a></li>
                                 {% else %}
                                     <li role="presentation"><a href="{{ path('invoice_pdf', {'id': invoice.id}) }}">Générer le PDF</a></li>
                                 {% endif %}
-                                <li role="presentation"><a href="{{ path('invoice_detail', {'id': invoice.id}) }}">Voir</a></li>
                             </ul>
                         </div>
                     </td>
                 </tr>
             {% endfor %}
         </table>
+        <div class="modal fade modal-invoice" id="modal-invoice">
+            <div class="modal-dialog"></div>
+        </div>
+        <div class="modal fade modal-payment" id="modal-payment">
+            <div class="modal-dialog">
+                <div class="modal-content"></div>
+            </div>
+        </div>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $('#modal-invoice').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            $(this).load(button.data('href'));
+        });
+        $('#modal-payment').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            $('#modal-payment .modal-content').load(button.data('href'));
+        });
+    </script>
 {% endblock %}

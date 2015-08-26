@@ -20,7 +20,7 @@
             {% for quotation in quotations %}
                 <tr>
                     <td>{{ quotation.number }}</td>
-                    <td>{{ quotation.customer.name }}</td>
+                    <td><a href="{{ path('customer.view', {'id': quotation.customer.id}) }}">{{ quotation.customer.name }}</a></td>
                     <td>{{ quotation.customer.firstname }} {{ quotation.customer.lastname }}</td>
                     <td>{{ quotation.date|date("d/m/Y") }}</td>
                     <td>{{ quotation.total|number_format(2, '.', ',') }} €</td>

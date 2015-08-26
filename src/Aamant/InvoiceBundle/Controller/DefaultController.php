@@ -158,4 +158,25 @@ class DefaultController extends Controller
     {
 
     }
+
+    /**
+     * @param $id
+     * @return array
+     *
+     * @Route("/invoice/payments/{id}", name="invoice.payments")
+     * @Template()
+     */
+    public function paymentsAction($id)
+    {
+        $invoice = $this->getDoctrine()->getRepository('AamantInvoiceBundle:Invoice')->find($id);
+        if ($invoice->getCompany()->getId() != $this->getUser()->getCompany()->getId()){
+            $this->createAccessDeniedException();
+        }
+        $repository = $this->getDoctrine()->getRepository('AamantInvoiceBundle:Payment');
+        $payments = $repository->findBy(['invoice' => $invoice]);
+        return [
+            'invoice'   => $invoice,
+            'payments'  => $payments
+        ];
+    }
 }
