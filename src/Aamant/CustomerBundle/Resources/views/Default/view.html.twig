@@ -1,0 +1,143 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block main %}
+<h1 class="page-header">{{ customer.name }}</h1>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <address class="customer-contact">
+                        <strong>{{ customer.firstname }} {{ customer.lastname }}</strong><br>
+                        {{ customer.address }}<br>
+                        {% if customer.addressComp %}{{ customer.addressComp }}<br>{% endif %}
+                        {{ customer.postcode }}, {{ customer.city }}, {{ customer.country }}<br>
+                        <abbr title="Email">Email:</abbr> {{ customer.email }}
+                    </address>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <dl class="dl-horizontal customer-recipe">
+                        <dt>Chiffre d'affaire total</dt>
+                        <dd>{{ total_recipe|number_format(2) }} &euro;</dd>
+                        <dt>Année en cours</dt>
+                        <dd>{{ recipe_current_year|number_format(2) }} &euro;</dd>
+                        <dt>Année passée</dt>
+                        <dd>{{ recipe_last_year|number_format(2) }} &euro;</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-micro">
+                <div class="panel-heading"><h2>Factures</h2></div>
+                <table class="table table-striped"">
+                    <tr>
+                        <th>Numero</th>
+                        <th>Devis</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Encaissé</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    {% for invoice in invoices %}
+                        <tr>
+                            <td>{{ invoice.number }}</td>
+                            <td>
+                                {% if (invoice.quotation) %}
+                                    {{ invoice.quotation.number }}
+                                {% endif %}
+                            </td>
+                            <td>{{ invoice.date|date("d/m/Y") }}</td>
+                            <td>{{ invoice.total }}</td>
+                            <td>{{ invoice.getPaid()|number_format(2, '.', ',') }} €</td>
+                            <td>
+                                {% if invoice.number == null %}
+                                    <span class="label label-warning">Brouillon</span>
+                                {% elseif invoice.status != 'close' and date('-1week') > date(invoice.date)  %}
+                                    <span class="label label-danger">Retard de paiement</span>
+                                {% elseif (invoice.status != 'close') %}
+                                    <span class="label label-warning">Attente de paiement</span>
+                                {% else %}
+                                    <span class="label label-success">Payé</span>
+                                {% endif %}
+                            </td>
+                            <td style="width: 120px">
+                                <div class="btn-group">
+                                    <a type="button" class="btn btn-default" href="{{ path('invoice_detail', {'id': invoice.id}) }}">Voir</a>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown menu action facture">
+                                        {% if invoice.number == '' %}
+                                            <li role="presentation"><a href="{{ path('invoice_invoice', {'id': invoice.id}) }}">Edit</a></li>
+                                            <li role="presentation"><a href="{{ path('invoice_delete') }}">Delete</a></li>
+                                        {% else %}
+                                            <li role="presentation"><a href="{{ path('invoice_pdf', {'id': invoice.id}) }}">Générer le PDF</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-micro">
+                <div class="panel-heading"><h2>Devis</h2></div>
+                <table class="table table-striped"">
+                    <tr>
+                        <th>Numero</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Statut</th>
+                        <th>Facturé</th>
+                        <th>Encaissé</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    {% for quotation in quotations %}
+                        <tr>
+                            <td>{{ quotation.number }}</td>
+                            <td>{{ quotation.date|date("d/m/Y") }}</td>
+                            <td>{{ quotation.total|number_format(2, '.', ',') }} €</td>
+                            <td>
+                                <span class="label label-primary">{{ quotation.getStatusName() }}</span>
+                            </td>
+                            <td>{{ quotation.getBilled()|number_format(2, '.', ',') }} €</td>
+                            <td>{{ quotation.getPaid()|number_format(2, '.', ',') }} €</td>
+                            <td style="width: 100px">
+                                <div class="btn-group">
+                                    <a type="button" class="btn btn-default" href="#">Voir</a>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown menu action devis">
+                                        {% if (quotation.status == 'wait') %}
+                                            <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Accepter</a></li>
+                                            <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'refused'}) }}">Refuser</a></li>
+                                        {% elseif (quotation.status == 'accept' or quotation.status == 'partial_invoiced') %}
+                                            <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Facturer</a></li>
+                                            <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'closed'}) }}">Cloturer</a></li>
+                                        {% elseif (quotation.status == 'wait' or quotation.status == 'accept') %}
+                                            <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'cancelled'}) }}">Annuler</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

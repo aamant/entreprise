@@ -2,6 +2,7 @@
 
 namespace Aamant\InvoiceBundle\Entity;
 
+use Aamant\CustomerBundle\Entity\Customer;
 use Aamant\UserBundle\Entity\Company;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -93,6 +94,53 @@ class PaymentRepository extends EntityRepository
 
         try {
             return $query->fetchAll();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function totalRecipeForCustomer(Customer $customer)
+    {
+        $query = $this->getEntityManager()->getConnection()->prepare('
+                SELECT SUM(p.total) as total FROM payment p
+                WHERE customer_id = :customer
+            ');
+        $query->execute(['customer' => $customer->getId()]);
+
+        try {
+            return $query->fetchColumn();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function recipeForCustomerForCurrentYear(Customer $customer)
+    {
+        $query = $this->getEntityManager()->getConnection()->prepare('
+                SELECT SUM(p.total) as total FROM payment p
+                WHERE customer_id = :customer
+                AND YEAR(p.date) = YEAR(CURRENT_DATE)
+            ');
+        $query->execute(['customer' => $customer->getId()]);
+
+        try {
+            return $query->fetchColumn();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function recipeForCustomerForLastYear(Customer $customer)
+    {
+        $query = $this->getEntityManager()->getConnection()->prepare('
+                SELECT SUM(p.total) as total FROM payment p
+                WHERE customer_id = :customer
+                AND YEAR(p.date) = YEAR(CURRENT_DATE) - 1
+            ');
+        $query->execute(['customer' => $customer->getId()]);
+
+        try {
+            return $query->fetchColumn();
         } catch (\Doctrine\ORM\NoResultException $e) {
             return null;
         }

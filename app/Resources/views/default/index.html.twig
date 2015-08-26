@@ -8,12 +8,12 @@
         </div>
         <div class="col-sm-8">
             <h2 class="text-center">Encours</h2>
-            <div class="panel panel-stat">
+            <div class="panel panel-default">
                 <!-- Default panel contents -->
                 <div class="panel-heading">Devis en cours : {{ wait|number_format(2, ',', '.') }} €</div>
 
                 <!-- Table -->
-                <table class="table">
+                <table class="table table-striped">
                     <tr>
                         <th>Devis</th>
                         <th>Client</th>
@@ -30,12 +30,12 @@
                     {% endfor %}
                 </table>
             </div>
-            <div class="panel panel-stat">
+            <div class="panel panel-default">
                 <!-- Default panel contents -->
                 <div class="panel-heading">Facture en cours : {{ paid|number_format(2, ',', '.') }} €</div>
 
                 <!-- Table -->
-                <table class="table">
+                <table class="table table-striped">
                     <tr>
                         <th>Facture</th>
                         <th>Devis</th>
@@ -65,12 +65,16 @@
     <div class="row">
         <div class="col-md-6">
             <div class="panel panel-default">
-                <canvas id="recipeByMonth"></canvas>
+                <div class="panel-body">
+                    <canvas id="recipeByMonth"></canvas>
+                </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="panel panel-default">
-                <canvas id="recipeAnnualPerMonth"></canvas>
+                <div class="panel-body">
+                    <canvas id="recipeAnnualPerMonth"></canvas>
+                </div>
             </div>
         </div>
     </div>

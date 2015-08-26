@@ -1,6 +1,10 @@
 {% extends 'layout/layout.html.twig' %}
 
 {% block main %}
-    <h1 class="page-header">Configuration</h1>
-    {{ form(form, { 'style': 'horizontal' }) }}
+    <div class="panel panel-default">
+        <div class="panel-heading"><h1>Configuration</h1></div>
+        <div class="panel-body">
+            {{ form(form, { 'style': 'horizontal' }) }}
+        </div>
+    </div>
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace Aamant\InvoiceBundle\Entity;
 
+use Aamant\CustomerBundle\Entity\Customer;
 use Aamant\UserBundle\Entity\Company;
 use Doctrine\ORM\EntityRepository;
 
@@ -106,6 +107,21 @@ class QuotationRepository extends EntityRepository
 
         try {
             return $query->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function findAllForCustomer(Customer $customer)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery('
+                SELECT q FROM AamantInvoiceBundle:Quotation q
+                WHERE q.customer = :customer'
+            )->setParameter('customer', $customer);
+
+        try {
+            return $query->getResult();
         } catch (\Doctrine\ORM\NoResultException $e) {
             return null;
         }

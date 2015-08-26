@@ -1,52 +1,55 @@
 {% extends 'layout/layout.html.twig' %}
 
 {% block main %}
-    <h1 class="page-header">Devis</h1>
-
-    <table class="table table-hover">
-        <tr>
-            <th>Numero</th>
-            <th>Client</th>
-            <th>Contact</th>
-            <th>Date</th>
-            <th>Total</th>
-            <th>Statut</th>
-            <th>Facturé</th>
-            <th>Encaissé</th>
-            <th>&nbsp;</th>
-        </tr>
-        {% for quotation in quotations %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h1>Devis</h1>
+        </div>
+        <table class="table table-striped">
             <tr>
-                <td>{{ quotation.number }}</td>
-                <td>{{ quotation.customer.name }}</td>
-                <td>{{ quotation.customer.firstname }} {{ quotation.customer.lastname }}</td>
-                <td>{{ quotation.date|date("d/m/Y") }}</td>
-                <td>{{ quotation.total|number_format(2, '.', ',') }} €</td>
-                <td>
-                    <span class="label label-primary">{{ quotation.getStatusName() }}</span>
-                </td>
-                <td>{{ quotation.getBilled()|number_format(2, '.', ',') }} €</td>
-                <td>{{ quotation.getPaid()|number_format(2, '.', ',') }} €</td>
-                <td style="width: 100px">
-                    <div class="dropdown">
-                        <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            Action
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-                            {% if (quotation.status == 'wait') %}
-                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Accepter</a></li>
-                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'refused'}) }}">Refuser</a></li>
-                            {% elseif (quotation.status == 'accept' or quotation.status == 'partial_invoiced') %}
-                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Facturer</a></li>
-                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'closed'}) }}">Cloturer</a></li>
-                            {% elseif (quotation.status == 'wait' or quotation.status == 'accept') %}
-                                <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'cancelled'}) }}">Annuler</a></li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </td>
+                <th>Numero</th>
+                <th>Client</th>
+                <th>Contact</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Statut</th>
+                <th>Facturé</th>
+                <th>Encaissé</th>
+                <th>&nbsp;</th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for quotation in quotations %}
+                <tr>
+                    <td>{{ quotation.number }}</td>
+                    <td>{{ quotation.customer.name }}</td>
+                    <td>{{ quotation.customer.firstname }} {{ quotation.customer.lastname }}</td>
+                    <td>{{ quotation.date|date("d/m/Y") }}</td>
+                    <td>{{ quotation.total|number_format(2, '.', ',') }} €</td>
+                    <td>
+                        <span class="label label-primary">{{ quotation.getStatusName() }}</span>
+                    </td>
+                    <td>{{ quotation.getBilled()|number_format(2, '.', ',') }} €</td>
+                    <td>{{ quotation.getPaid()|number_format(2, '.', ',') }} €</td>
+                    <td style="width: 100px">
+                        <div class="dropdown">
+                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                                Action
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                                {% if (quotation.status == 'wait') %}
+                                    <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Accepter</a></li>
+                                    <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'refused'}) }}">Refuser</a></li>
+                                {% elseif (quotation.status == 'accept' or quotation.status == 'partial_invoiced') %}
+                                    <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Facturer</a></li>
+                                    <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'closed'}) }}">Cloturer</a></li>
+                                {% elseif (quotation.status == 'wait' or quotation.status == 'accept') %}
+                                    <li role="presentation"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'cancelled'}) }}">Annuler</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}

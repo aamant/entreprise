@@ -2,6 +2,7 @@
 
 namespace Aamant\InvoiceBundle\Entity;
 
+use Aamant\CustomerBundle\Entity\Customer;
 use Aamant\UserBundle\Entity\Company;
 use Doctrine\ORM\EntityRepository;
 
@@ -108,6 +109,27 @@ class InvoiceRepository extends EntityRepository
 
         try {
             return $query->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    /**
+     * All invoices a customer
+     *
+     * @param $id
+     * @return array|null
+     */
+    public function findAllByCustomer(Customer $customer)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery("
+                SELECT i FROM AamantInvoiceBundle:Invoice i
+                WHERE i.customer = :customer
+            ")->setParameter('customer', $customer);
+
+        try {
+            return $query->getResult();
         } catch (\Doctrine\ORM\NoResultException $e) {
             return null;
         }

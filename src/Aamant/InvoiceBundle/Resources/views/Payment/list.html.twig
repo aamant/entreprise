@@ -1,34 +1,35 @@
 {% extends 'layout/layout.html.twig' %}
 
 {% block main %}
-    <h1 class="page-header">Paiements</h1>
-
-    <table class="table table-hover">
-        <tr>
-            <th>Client</th>
-            <th>Facture</th>
-            <th>Total</th>
-            <th>Date</th>
-            <th>&nbsp;</th>
-        </tr>
-        {% for payment in payments %}
+    <div class="panel panel-default">
+        <div class="panel-heading"><h1>Paiements</h1></div>
+        <table class="table table-hover">
             <tr>
-                <td>{{ payment.customer.name }}</td>
-                <td>{{ payment.invoice.number }}</td>
-                <td>{{ payment.total }}</td>
-                <td>{{ payment.date|date("d/m/Y") }}</td>
-                <td style="width: 100px">
-                    <div class="dropdown">
-                        <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            Action
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a href="{{ path('invoice_view', {'id': payment.invoice.id}) }}" target="_blank">Voir la facture</a></li>
-                        </ul>
-                    </div>
-                </td>
+                <th>Client</th>
+                <th>Facture</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th>&nbsp;</th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.customer.name }}</td>
+                    <td>{{ payment.invoice.number }}</td>
+                    <td>{{ payment.total }}</td>
+                    <td>{{ payment.date|date("d/m/Y") }}</td>
+                    <td style="width: 100px">
+                        <div class="dropdown">
+                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                                Action
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                                <li role="presentation"><a href="{{ path('invoice_view', {'id': payment.invoice.id}) }}" target="_blank">Voir la facture</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}

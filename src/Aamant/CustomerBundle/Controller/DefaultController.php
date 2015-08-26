@@ -24,6 +24,49 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/customer/view/{id}", name="customer.view")
+     * @Template()
+     *
+     * @param $id
+     * @return array
+     */
+    public function viewAction($id)
+    {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        /** @var \Aamant\CustomerBundle\Entity\Customer $customer */
+        $customer = $em->getRepository('AamantCustomerBundle:Customer')
+            ->find($id);
+
+        if ($customer->getCompany()->getId() != $this->getUser()->getCompany()->getId()){
+            $this->createAccessDeniedException();
+        }
+
+        /** @var \Aamant\InvoiceBundle\Entity\QuotationRepository $quotations_repository */
+        $quotations_repository = $em->getRepository('AamantInvoiceBundle:Quotation');
+        $quotations = $quotations_repository->findAllForCustomer($customer);
+
+        /** @var \Aamant\InvoiceBundle\Entity\InvoiceRepository $invoice_repository */
+        $invoice_repository = $em->getRepository('AamantInvoiceBundle:Invoice');
+        $invoices = $invoice_repository->findAllByCustomer($customer);
+
+        /** @var \Aamant\InvoiceBundle\Entity\PaymentRepository $payment_repository */
+        $payment_repository = $em->getRepository('AamantInvoiceBundle:Payment');
+        $total_recipe = $payment_repository->totalRecipeForCustomer($customer);
+        $recipe_current_year = $payment_repository->recipeForCustomerForCurrentYear($customer);
+        $recipe_last_year = $payment_repository->recipeForCustomerForLastYear($customer);
+
+        return [
+            'customer'      => $customer,
+            'quotations'    => $quotations,
+            'invoices'      => $invoices,
+            'total_recipe'  => $total_recipe,
+            'recipe_current_year'   => $recipe_current_year,
+            'recipe_last_year'      => $recipe_last_year
+        ];
+    }
+
+    /**
      * @Route("/customer/edit/{id}", name="customer_edit")
      * @Template()
      */

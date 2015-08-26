@@ -6,6 +6,10 @@
 {% endblock %}
 
 {% block main %}
-    <h1 class="page-header">Nouveau payment</h1>
-    {{ form(form, { 'style': 'horizontal'}) }}
+    <div class="panel panel-default">
+        <div class="panel-heading"><h1>Nouveau paiement</h1></div>
+        <div class="panel-body">
+            {{ form(form, { 'style': 'horizontal'}) }}
+        </div>
+    </div>
 {% endblock %}
