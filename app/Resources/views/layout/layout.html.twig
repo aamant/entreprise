@@ -47,7 +47,7 @@
                 <ul class="nav nav-sidebar">
                     <li><a href="{{ url('customer_new') }}">Nouveau client</a></li>
                     <li><a href="{{ url('invoice_quotation') }}">Nouveau devis</a></li>
-                    <li><a href="{{ url('invoice_invoice') }}">Nouvelle facture</a></li>
+                    <li><a href="{{ url('invoice.invoice.create', {'type':'create'}) }}">Nouvelle facture</a></li>
                     <li><a href="{{ url('invoice_payment_create') }}">Nouveau paiement</a></li>
                 </ul>
                 <ul class="nav nav-sidebar">

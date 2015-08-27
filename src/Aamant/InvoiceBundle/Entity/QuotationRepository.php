@@ -68,7 +68,6 @@ class QuotationRepository extends EntityRepository
             ")->setParameter('company', $company);
 
         try {
-            $sql = $query->getSQL();
             return $query->getSingleScalarResult();
         } catch (\Doctrine\ORM\NoResultException $e) {
             return null;
@@ -124,7 +123,29 @@ class QuotationRepository extends EntityRepository
         try {
             return $query->getResult();
         } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
+            return [];
+        }
+    }
+
+    /**
+     * @param Quotation $quotation
+     * @return array
+     */
+    public function getAllInvoiceItemForTheQuote(Quotation $quotation)
+    {
+        try {
+            $query = $this->getEntityManager()
+                ->createQuery('
+                SELECT q, i, it FROM AamantInvoiceBundle:Quotation q
+                JOIN q.invoices i
+                JOIN i.items it
+                WHERE q.id = :quotation
+            ')->setParameter('quotation', $quotation->getId());
+
+            return $query->getResult();
+        }
+        catch (\Doctrine\ORM\NoResultException $e){
+            return [];
         }
     }
 }

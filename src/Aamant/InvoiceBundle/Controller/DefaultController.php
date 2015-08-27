@@ -23,17 +23,47 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("invoice/{id}", name="invoice_invoice", defaults={"id"=null})
+     * @Route("invoice/{type}/{id}", name="invoice.invoice.create", requirements={"type"="create|invoice|quotation","id"="\d+"}, defaults={"id"=0})
      * @Template()
      */
-    public function invoiceAction(Request $request, $id = null)
+    public function invoiceAction(Request $request, $type, $id)
     {
-        echo $request->getLocale();
         $em = $this->getDoctrine()->getManager();
-        if ($id){
+
+        if ($type == 'invoice' && $id) {
             $invoice = $em->getRepository('AamantInvoiceBundle:Invoice')
                 ->findFullById($id);
-        } else {
+        }
+        elseif ($type == 'quotation' && $id){
+            /** @var \Aamant\InvoiceBundle\Entity\QuotationRepository $quotation_rep */
+            $quotation_rep = $em->getRepository('AamantInvoiceBundle:Quotation');
+            /** @var \Aamant\InvoiceBundle\Entity\Quotation $quotation */
+            $quotation = $quotation_rep->find($id);
+
+            $invoice = new Invoice();
+            $invoice->setCompany($this->getUser()->getCompany());
+            $invoice->setCustomer($quotation->getCustomer());
+            $invoice->setQuotation($quotation);
+
+            $items_invoice = $quotation_rep->getAllInvoiceItemForTheQuote($quotation);
+            foreach ($quotation->getItems() as $i){
+                $invoiced = false;
+                foreach ($items_invoice as $ii){
+                    if ($ii->getName() == $i->getName()) $invoiced = true;
+                }
+
+                if (!$invoiced){
+                    $item = new Invoice\Item();
+                    $item->setName($i->getName());
+                    $item->setQuantity($i->getQuantity());
+                    $item->setPrice($i->getPrice());
+                    $item->setTotal($i->getTotal());
+                    $invoice->addItem($item);
+                }
+            }
+            $invoice->calculate();
+        }
+        else {
             $invoice = new Invoice();
             $invoice->setCompany($this->getUser()->getCompany());
             $invoice->addItem(new Invoice\Item());

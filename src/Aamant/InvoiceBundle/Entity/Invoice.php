@@ -417,4 +417,18 @@ class Invoice
         else
             return Carbon::now()->formatLocalized('%d %B %Y');
     }
+
+    /**
+     * @return $this
+     */
+    public function calculate()
+    {
+        $total = 0;
+        foreach ($this->getItems() as $item){
+            $total += $item->getTotal();
+        }
+        $this->setSubTotal($total);
+        $this->setTotal($total - $this->getAdvance());
+        return $this;
+    }
 }

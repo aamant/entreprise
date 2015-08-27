@@ -48,8 +48,8 @@ class InvoiceType extends AbstractType
         $builder->add('total');
 
         if (!$invoice->getNumber()){
-            $builder->add('save', 'submit', ['label' => 'Enregistrer']);
-            $builder->add('create', 'submit', ['label' => 'Creation', 'attr' => array('class' => 'btn btn-danger')]);
+            $builder->add('save', 'submit', ['label' => 'Enregistrer comme brouillon', 'attr' => array('class' => 'btn btn-default')]);
+            $builder->add('create', 'submit', ['label' => 'Enregistrer', 'attr' => array('class' => 'btn btn-primary')]);
         }
     }
 
