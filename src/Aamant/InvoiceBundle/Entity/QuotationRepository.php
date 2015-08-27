@@ -64,10 +64,11 @@ class QuotationRepository extends EntityRepository
                 LEFT JOIN q.invoices i
                 WHERE q.company = :company
                 AND q.status IN ('accept', 'partial_invoiced')
-                GROUP BY q.total
+                GROUP BY q.company
             ")->setParameter('company', $company);
 
         try {
+            $sql = $query->getSQL();
             return $query->getSingleScalarResult();
         } catch (\Doctrine\ORM\NoResultException $e) {
             return null;
