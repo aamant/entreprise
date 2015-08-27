@@ -136,11 +136,11 @@ class QuotationRepository extends EntityRepository
         try {
             $query = $this->getEntityManager()
                 ->createQuery('
-                SELECT q, i, it FROM AamantInvoiceBundle:Quotation q
-                JOIN q.invoices i
-                JOIN i.items it
-                WHERE q.id = :quotation
-            ')->setParameter('quotation', $quotation->getId());
+                SELECT ii FROM AamantInvoiceBundle:Invoice\Item ii
+                JOIN ii.invoice i
+                JOIN i.quotation q
+                WHERE q = :quotation
+            ')->setParameter('quotation', $quotation);
 
             return $query->getResult();
         }

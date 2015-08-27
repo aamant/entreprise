@@ -30,21 +30,31 @@
 
             total.val(price.val() * qty.val());
 
-            var invoice_total = 0;
+            var quotation_total = 0;
             Quotation.itemsContainer.children().each(function(key, node){
-                invoice_total = parseFloat(invoice_total) + parseFloat($(node).find('[id$=_total]').val());
-                if (invoice_total == NaN){
-                    invoice_total = 0;
+                quotation_total = parseFloat(quotation_total) + parseFloat($(node).find('[id$=_total]').val());
+                if (quotation_total == NaN){
+                    quotation_total = 0;
                 }
             });
-            Quotation.total.val(parseFloat(invoice_total));
+            Quotation.total.val(parseFloat(quotation_total));
         }
 
         $element.find('[id$=_quantity]').change(calculate);
         $element.find('[id$=_price]').change(calculate);
+
+        $element.find('[data-action="remove-item"]').click(Quotation.prototype.removeItem);
     }
 
-    $.fn.invoice = function(option){
+    Quotation.prototype.removeItem = function(){
+        $element = $(this).parents('tr');
+        $element.hide(1000, function(){
+            $element.remove();
+            Quotation.advance.trigger('change');
+        });
+    }
+
+    $.fn.quotation = function(option){
         Quotation.DEFAULTS = option
         return this.each(function(){
             new Quotation($(this), option);

@@ -9,7 +9,9 @@ class ConfigType extends AbstractType
     {
         $builder->add('invoice_export', 'text', ['label' => 'Chemin des factures']);
         $builder->add('invoice_increment', 'text', ['label' => 'Numero de facture']);
-        $builder->add('save', 'submit');
+        $builder->add('deposit_invoice_text', 'text', ['label' => 'Texte des factures d\'acompte']);
+        $builder->add('deposit_invoice_percent', 'text', ['label' => 'Pourcentage des facture d\'acompte']);
+        $builder->add('Enregistrer', 'submit');
     }
 
     public function getName()

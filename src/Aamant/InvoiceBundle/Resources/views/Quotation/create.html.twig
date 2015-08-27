@@ -21,6 +21,7 @@
             {% endfilter %}">
                 <thead>
                 <tr>
+                    <th>&nbsp</th>
                     <th style="width:70%">Nom</th>
                     <th style="width:10%">Qty</th>
                     <th style="width:10%">Prix unitaire</th>
@@ -30,6 +31,7 @@
                 <tbody>
                 {% for item in form.items %}
                     <tr>
+                        <td><span data-action="remove-item"  class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
                         <td>{{ form_widget(item.name) }}</td>
                         <td>{{ form_widget(item.quantity) }}</td>
                         <td>{{ form_widget(item.price) }}</td>
@@ -70,14 +72,14 @@
         $(document).ready(function() {
             var prototype = $('table.items').attr('data-prototype');
             var container = $('table.items > tbody');
-            var invoice = $('form').invoice();
+            var invoice = $('form').quotation();
 
             $('.add_item_link').on('click', function(e) {
                 e.preventDefault();
 
                 var item = prototype.replace(/__name__/g, container.children().length);
                 item = container.append(item);
-                $(item).invoice('addItem');
+                $(item).quotation('addItem');
             });
         });
     </script>

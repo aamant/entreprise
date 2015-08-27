@@ -47,6 +47,16 @@
         $element.find('[id$=_quantity]').change(calculate);
         $element.find('[id$=_price]').change(calculate);
         Invoice.advance.change(calculate);
+
+        $element.find('[data-action="remove-item"]').click(Invoice.prototype.removeItem);
+    }
+
+    Invoice.prototype.removeItem = function(){
+        $element = $(this).parents('tr');
+        $element.hide(1000, function(){
+            $element.remove();
+            Invoice.advance.trigger('change');
+        });
     }
 
     $.fn.invoice = function(option){

@@ -46,6 +46,21 @@ class Config
      */
     protected $invoice_export;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(max="255")
+     */
+    protected $deposit_invoice_text = 'Acompte de 30% sur la proposition commerciale %s d\'un montant total de %s€';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="float")
+     * @Assert\NotBlank()
+     */
+    protected $deposit_invoice_percent = 0.3;
 
     /**
      * Get id
@@ -124,5 +139,51 @@ class Config
     public function getInvoiceExport()
     {
         return $this->invoice_export;
+    }
+
+    /**
+     * Set deposit_invoice_text
+     *
+     * @param string $depositInvoiceText
+     * @return Config
+     */
+    public function setDepositInvoiceText($depositInvoiceText)
+    {
+        $this->deposit_invoice_text = $depositInvoiceText;
+
+        return $this;
+    }
+
+    /**
+     * Get deposit_invoice_text
+     *
+     * @return string 
+     */
+    public function getDepositInvoiceText()
+    {
+        return $this->deposit_invoice_text;
+    }
+
+    /**
+     * Set deposit_invoice_percent
+     *
+     * @param float $depositInvoicePercent
+     * @return Config
+     */
+    public function setDepositInvoicePercent($depositInvoicePercent)
+    {
+        $this->deposit_invoice_percent = $depositInvoicePercent;
+
+        return $this;
+    }
+
+    /**
+     * Get deposit_invoice_percent
+     *
+     * @return float 
+     */
+    public function getDepositInvoicePercent()
+    {
+        return $this->deposit_invoice_percent;
     }
 }

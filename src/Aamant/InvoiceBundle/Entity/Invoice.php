@@ -84,6 +84,12 @@ class Invoice
      */
     protected $items;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default":false})
+     * @Assert\NotBlank()
+     */
+    protected $deposit_invoice = false;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -430,5 +436,28 @@ class Invoice
         $this->setSubTotal($total);
         $this->setTotal($total - $this->getAdvance());
         return $this;
+    }
+
+    /**
+     * Set deposit_invoice
+     *
+     * @param boolean $depositInvoice
+     * @return Invoice
+     */
+    public function setDepositInvoice($depositInvoice)
+    {
+        $this->deposit_invoice = $depositInvoice;
+
+        return $this;
+    }
+
+    /**
+     * Get deposit_invoice
+     *
+     * @return boolean 
+     */
+    public function getDepositInvoice()
+    {
+        return $this->deposit_invoice;
     }
 }
