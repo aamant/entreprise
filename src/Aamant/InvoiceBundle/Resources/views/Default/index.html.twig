@@ -20,7 +20,7 @@
                     <td>{{ invoice.number }}</td>
                     <td>
                         {% if (invoice.quotation) %}
-                            {{ invoice.quotation.number }}
+                            <a href="{{ path('quotation.view', {'id': invoice.quotation.id}) }}">{{ invoice.quotation.number }}</a>
                         {% endif %}
                     </td>
                     <td><a href="{{ path('customer.view', {'id': invoice.customer.id}) }}">{{ invoice.customer.name }}</a></td>

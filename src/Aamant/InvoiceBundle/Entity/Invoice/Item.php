@@ -48,6 +48,11 @@ class Item
     protected $total;
 
     /**
+     * @var int
+     */
+    protected $past_time = 0;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -170,5 +175,21 @@ class Item
     public function getInvoice()
     {
         return $this->invoice;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPastTime()
+    {
+        return $this->past_time;
+    }
+
+    /**
+     * @param int $past_time
+     */
+    public function setPastTime($past_time)
+    {
+        $this->past_time = $past_time;
     }
 }

@@ -85,8 +85,7 @@ class Invoice
     protected $items;
 
     /**
-     * @ORM\Column(type="boolean", options={"default":false})
-     * @Assert\NotBlank()
+     * @ORM\Column(type="boolean", options={"default"=false})
      */
     protected $deposit_invoice = false;
 

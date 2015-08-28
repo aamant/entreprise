@@ -12,6 +12,9 @@ class ItemType extends AbstractType
         $builder->add('quantity');
         $builder->add('price');
         $builder->add('total');
+        $builder->add('past_time', 'text', [
+            'disabled'  => true
+        ]);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

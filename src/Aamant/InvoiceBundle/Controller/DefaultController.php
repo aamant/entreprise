@@ -66,6 +66,7 @@ class DefaultController extends Controller
                     $item->setQuantity($i->getQuantity());
                     $item->setPrice($i->getPrice());
                     $item->setTotal($i->getTotal());
+                    $item->setPastTime($i->getPastTime());
                     $invoice->addItem($item);
                 }
             }

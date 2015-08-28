@@ -24,7 +24,8 @@
                 <thead>
                 <tr>
                     <th>&nbsp;</th>
-                    <th style="width:70%">Nom</th>
+                    <th style="width:60%">Nom</th>
+                    <th style="width:10%">Temps passé</th>
                     <th style="width:10%">Qty</th>
                     <th style="width:10%">Prix unitaire</th>
                     <th style="width:10%">Total</th>
@@ -35,6 +36,7 @@
                     <tr>
                         <td><span data-action="remove-item" class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
                         <td>{{ form_widget(item.name) }}</td>
+                        <td>{{ form_widget(item.past_time) }}</td>
                         <td>{{ form_widget(item.quantity) }}</td>
                         <td>{{ form_widget(item.price) }}</td>
                         <td>{{ form_widget(item.total) }}</td>

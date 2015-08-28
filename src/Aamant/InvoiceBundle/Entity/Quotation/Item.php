@@ -48,6 +48,17 @@ class Item
     protected $total;
 
     /**
+     * @ORM\OneToMany(targetEntity="Aamant\InvoiceBundle\Entity\TimeTracker", mappedBy="quotation_item", cascade={"persist"})
+     */
+    protected $time_tracker;
+
+    /**
+     * @ORM\Column(type="decimal", scale=2, options={"default":0})
+     * @Assert\NotBlank()
+     */
+    protected $past_time = 0;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -170,5 +181,68 @@ class Item
     public function getQuotation()
     {
         return $this->quotation;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->time_tracker = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set past_time
+     *
+     * @param string $pastTime
+     * @return Item
+     */
+    public function setPastTime($pastTime)
+    {
+        $this->past_time = $pastTime;
+
+        return $this;
+    }
+
+    /**
+     * Get past_time
+     *
+     * @return string 
+     */
+    public function getPastTime()
+    {
+        return $this->past_time;
+    }
+
+    /**
+     * Add time_tracker
+     *
+     * @param \Aamant\InvoiceBundle\Entity\TimeTracker $timeTracker
+     * @return Item
+     */
+    public function addTimeTracker(\Aamant\InvoiceBundle\Entity\TimeTracker $timeTracker)
+    {
+        $this->time_tracker[] = $timeTracker;
+
+        return $this;
+    }
+
+    /**
+     * Remove time_tracker
+     *
+     * @param \Aamant\InvoiceBundle\Entity\TimeTracker $timeTracker
+     */
+    public function removeTimeTracker(\Aamant\InvoiceBundle\Entity\TimeTracker $timeTracker)
+    {
+        $this->time_tracker->removeElement($timeTracker);
+    }
+
+    /**
+     * Get time_tracker
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTimeTracker()
+    {
+        return $this->time_tracker;
     }
 }
