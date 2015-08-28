@@ -45,9 +45,13 @@ class Dashbord
         $wait_paid = $this->getEm()
             ->getRepository('AamantInvoiceBundle:Invoice')
             ->getWaitToPaid($company);
-        $wait_invoiced = $this->getEm()
-            ->getRepository('AamantInvoiceBundle:Quotation')
-            ->findWaitInvoiceValue($company);
+        $quotations = $this->getEm()
+            ->getRepository("AamantInvoiceBundle:Quotation")
+            ->findWaitInvoice($company);
+        $wait_invoiced = 0;
+        foreach ($quotations as $quotation){
+            $wait_invoiced += $quotation->getTotal() - $quotation->getPaid();
+        }
 
         $data = [
             [
