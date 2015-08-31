@@ -22,7 +22,9 @@
                     </tr>
                     {% for quotation in quotations %}
                         <tr>
-                            <td>{{ quotation.number }}</td>
+                            <td>
+                                <a href="{{ path('quotation.view', {'id': quotation.id}) }}">{{ quotation.number }}</a>
+                            </td>
                             <td>{{ quotation.customer.name }}</td>
                             <td>{{ quotation.total|number_format(2, ',', '.') }} €</td>
                             <td>{{ (quotation.total - quotation.getBilled())|number_format(2, ',', '.') }} €</td>
@@ -46,8 +48,12 @@
                     </tr>
                     {% for invoice in invoices %}
                         <tr>
-                            <td>{{ invoice.number }}</td>
-                            <td>{{ invoice.quotation ? invoice.quotation.number : '' }}</td>
+                            <td><a type="button" class="btn btn-link" data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">{{ invoice.number }}</a></td>
+                            <td>
+                                {% if (invoice.quotation) %}
+                                    <a href="{{ path('quotation.view', {'id': invoice.quotation.id}) }}">{{ invoice.quotation.number }}</a>
+                                {% endif %}
+                            </td>
                             <td>{{ invoice.customer.name }}</td>
                             <td>{{ invoice.total|number_format(2, ',', '.') }} €</td>
                             <td>{{ (invoice.total - invoice.getPaid())|number_format(2, ',', '.') }} €</td>
@@ -81,6 +87,7 @@
 {% endblock %}
 
 {% block script %}
+    {{ parent() }}
 <script>
     Chart.defaults.global.responsive = true;
     Chart.defaults.global.maintainAspectRatio = true;

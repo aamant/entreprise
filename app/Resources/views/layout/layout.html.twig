@@ -87,4 +87,29 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade modal-invoice" id="modal-invoice">
+    <div class="modal-dialog"></div>
+</div>
+<div class="modal fade modal-payment" id="modal-payment">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(function(){
+            $('#modal-invoice').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                $(this).load(button.data('href'));
+            });
+            $('#modal-payment').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                $('#modal-payment .modal-content').load(button.data('href'));
+            });
+        })
+    </script>
 {% endblock %}

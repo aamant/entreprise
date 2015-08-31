@@ -87,7 +87,7 @@
             </tr>
             {% for invoice in quotation.invoices %}
                 <tr>
-                    <td>{{ invoice.number }}</td>
+                    <td><a type="button" class="btn btn-link" data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">{{ invoice.number }}</a></td>
                     <td><a href="{{ path('customer.view', {'id': invoice.customer.id}) }}">{{ invoice.customer.name }}</a></td>
                     <td>{{ invoice.customer.firstname }} {{ invoice.customer.lastname }}</td>
                     <td>{{ invoice.date|date("d/m/Y") }}</td>
@@ -111,6 +111,7 @@
 {% endblock %}
 
 {% block script %}
+    {{ parent() }}
     <script>
         $('.ajax-submit').on('submit', function(e){
             e.preventDefault();
