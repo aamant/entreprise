@@ -16,7 +16,7 @@ class TimeTrackerController extends Controller
      */
     public function addAction(Request $request, $id)
     {
-        $value = $request->request->getDigits('value');
+        $value = (float)preg_replace('/,/', '.', $request->request->get('value'));
         $em = $this->getDoctrine()->getEntityManager();
         /** @var \Aamant\InvoiceBundle\Entity\Quotation\Item $item */
         $item = $this->getDoctrine()->getRepository('AamantInvoiceBundle:Quotation\Item')->find($id);
