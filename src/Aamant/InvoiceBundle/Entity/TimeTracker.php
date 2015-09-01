@@ -24,7 +24,7 @@ class TimeTracker
     /**
      * @var integer
      *
-     * @ORM\Column(name="time", type="integer")
+     * @ORM\Column(name="time", type="decimal", scale=2, options={"default":0})
      */
     private $time;
 
