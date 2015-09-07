@@ -25,7 +25,7 @@ class Status
         elseif ($entity instanceof Invoice){
             $quote = $entity->getQuotation();
             if ($entity->getNumber() && $quote){
-                if ($entity->getTotal() >= $quote->getTotal()){
+                if ($quote->getBilled() >= $quote->getTotal()){
                     $quote->setStatus(Quotation::STATUS_INVOICED);
                 } else {
                     $quote->setStatus(Quotation::STATUS_PARTIAL_INVOICED);
