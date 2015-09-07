@@ -59,12 +59,14 @@ class Dashbord
                 'value' => $paid,
                 'color' => '#bf616a',
                 'highlight' => '#bf616a'
-            ], [
+            ],
+            [
                 'label' => 'Attente de paiement',
-                'value' => number_format($wait_paid, 2),
+                'value' => number_format($wait_paid, 2, '.', ''),
                 'color' => '#d08770',
                 'highlight' => '#d08770'
-            ], [
+            ],
+            [
                 'label' => 'Attente de facturation',
                 'value' => $wait_invoiced,
                 'color' => '#ab7967',
