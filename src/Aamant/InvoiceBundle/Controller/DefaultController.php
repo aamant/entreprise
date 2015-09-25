@@ -92,6 +92,12 @@ class DefaultController extends Controller
 
         if ($form->isValid()){
 
+            /** @var \Aamant\InvoiceBundle\Entity\Invoice\Item $item */
+            foreach ($invoice->getItems() as $item){
+                if ($item->getTotal() === null)
+                    $invoice->removeItem($item);
+            }
+
             if ($form->get('create')->isClicked()){
                 $config = $this->getUser()->getCompany()->getConfig();
                 $increment = $config->getInvoiceIncrement();
