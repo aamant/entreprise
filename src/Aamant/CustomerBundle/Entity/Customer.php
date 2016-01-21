@@ -23,7 +23,7 @@ class Customer
     protected $company;
 
     /**
-     * @ORM\Column(type="string", length=1)
+     * @ORM\Column(type="string", length=1, nullable=true)
      * @Assert\Choice(choices = {"m", "f"})
      */
     protected $gender;
@@ -35,15 +35,13 @@ class Customer
     protected $name;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Length(max="100")
      */
     protected $firstname;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Length(max="100")
      */
     protected $lastname;

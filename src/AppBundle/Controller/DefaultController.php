@@ -14,7 +14,7 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $company = $this->getUser()->getCompany();
-        /** @var \Aamant\StatisticBundle\Service\Statistic $statistics */
+        /** @var \Aamant\StatisticBundle\Service\Dashbord $statistics */
         $statistics = $this->get('statistics.dashbord');
         $doughnut = $statistics->annual($company);
         $recipeByMonth = $statistics->recipeByMonths($company);

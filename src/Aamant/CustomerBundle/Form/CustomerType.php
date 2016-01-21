@@ -12,8 +12,8 @@ class CustomerType extends AbstractType
             'choices'   => array('m' => 'Homme', 'f' => 'Femme'),
             'required'  => false,
         ));
-        $builder->add('firstname');
-        $builder->add('lastname');
+        $builder->add('firstname', 'text', array('required' => false));
+        $builder->add('lastname', 'text', array('required' => false));
         $builder->add('email', 'email', array('required' => false));
         $builder->add('address');
         $builder->add('address_comp', 'text', array('required' => false));
