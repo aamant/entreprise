@@ -48,7 +48,7 @@
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown menu action sur les factures">
                                 <li><a data-href="{{ path('invoice.payments', {'id': invoice.id}) }}" data-toggle="modal" data-target="#modal-payment">Voir les paiements</a></li>
                                 {% if invoice.number == '' %}
-                                    <li role="presentation"><a href="{{ path('invoice_invoice', {'id': invoice.id}) }}">Editer</a></li>
+                                    <li role="presentation"><a href="{{ path('invoice.invoice.create', {'id': invoice.id, 'type': 'invoice'}) }}">Editer</a></li>
                                     <li role="presentation"><a href="{{ path('invoice_delete') }}">Supprimer</a></li>
                                 {% else %}
                                     <li role="presentation"><a href="{{ path('invoice_pdf', {'id': invoice.id}) }}">Générer le PDF</a></li>
