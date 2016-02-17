@@ -69,7 +69,7 @@
                             </td>
                             <td style="width: 120px">
                                 <div class="btn-group">
-                                    <a type="button" class="btn btn-default" href="{{ path('invoice_detail', {'id': invoice.id}) }}">Voir</a>
+                                    <a type="button" class="btn btn-default" data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">Voir</a>
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
