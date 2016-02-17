@@ -116,7 +116,7 @@
                             <td>{{ quotation.getPaid()|number_format(2, '.', ',') }} €</td>
                             <td style="width: 100px">
                                 <div class="btn-group">
-                                    <a type="button" class="btn btn-default" href="#">Voir</a>
+                                    <a type="button" class="btn btn-default" href="{{ path('quotation.view', {'id': quotation.id}) }}">Voir</a>
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
