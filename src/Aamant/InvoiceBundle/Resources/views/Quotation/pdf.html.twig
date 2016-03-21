@@ -52,7 +52,11 @@
             </p>
         </div>
     </div>
-    <br/><br/><br/>
+    <br/><br/>
+    {% if quotation.description %}
+        <p>{{ quotation.description|raw }}</p>
+    {% endif %}
+    <br/>
     <!-- / end client details section -->
     {% if (quotation.specifications) %}
         <p>Cahier des charges n° {{ quotation.specifications}}</p>

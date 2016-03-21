@@ -42,6 +42,11 @@ class Quotation
     protected $invoices;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $description;
+
+    /**
      * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Length(max="100")
      */
@@ -395,5 +400,51 @@ class Quotation
     public function getSpecifications()
     {
         return $this->specifications;
+    }
+
+    /**
+     * Set describe
+     *
+     * @param string $describe
+     * @return Quotation
+     */
+    public function setDescribe($describe)
+    {
+        $this->describe = $describe;
+
+        return $this;
+    }
+
+    /**
+     * Get describe
+     *
+     * @return string 
+     */
+    public function getDescribe()
+    {
+        return $this->describe;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Quotation
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

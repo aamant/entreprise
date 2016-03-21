@@ -56,6 +56,11 @@
             </div>
         </div>
     </div>
+    {% if quotation.description %}
+    <div class="panel panel-default">
+        <div class="panel-body">{{ quotation.description|raw }}</div>
+    </div>
+    {% endif %}
     <div class="panel panel-default">
         <table class="table table-striped">
             <tr>

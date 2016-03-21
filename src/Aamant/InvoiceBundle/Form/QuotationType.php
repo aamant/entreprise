@@ -26,6 +26,7 @@ class QuotationType extends AbstractType
         ));
         $builder->add('number', 'text', ['label' => 'Numéro']);
         $builder->add('date', 'date', ['input' => 'datetime']);
+        $builder->add('description');
         $builder->add('items', 'collection', array(
             'type' => new ItemType(),
             'allow_add' => true,
