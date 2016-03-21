@@ -52,7 +52,7 @@ class QuotationController extends Controller
                 'Vos changements ont été sauvegardés!'
             );
 
-            return $this->redirect($this->generateUrl('invoice_quotations_list'));
+            return $this->redirect($this->generateUrl('quotation.view', ['id' => $quotation->getId()]));
         }
 
         return ['form' => $form->createView()];
@@ -116,5 +116,54 @@ class QuotationController extends Controller
         return [
             'quotation' => $quotation
         ];
+    }
+
+    /**
+     * @Route("quotation/pdf/{id}", name="quotation_pdf")
+     */
+    public function pdfAction($id)
+    {
+        try {
+            $quotation = $this->getDoctrine()
+                ->getRepository('AamantInvoiceBundle:Quotation')
+                ->find($id);
+            $user = $this->get('security.context')->getToken()->getUser();
+            $config = $user->getCompany()->getConfig();
+
+            $filename = $config->getQuotationExport().'/Devis-'.$quotation->getNumber().'.pdf';
+
+            $this->get('knp_snappy.pdf')->generateFromHtml(
+                $this->renderView(
+                    'AamantInvoiceBundle:Quotation:pdf.html.twig',
+                    [
+                        'quotation' => $quotation,
+                        'user'      => $user,
+                        'company'   => $user->getCompany(),
+                        'customer'  => $quotation->getCustomer(),
+                        'base_path' => realpath($this->get('kernel')->getRootDir() . '/../web/')
+                    ]
+                ),
+                $filename
+            );
+
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'Le pdf est générée'
+            );
+
+            return $this->redirectToRoute('quotation.view', ['id' => $quotation->getId()]);
+        }
+        catch (\Exception $e){
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $e->getMessage()
+            );
+
+            if (isset($quotation)){
+                return $this->redirectToRoute('quotation.view', ['id' => $quotation->getId()]);
+            }
+            
+            return $this->redirectToRoute('invoices_list');
+        }
     }
 }

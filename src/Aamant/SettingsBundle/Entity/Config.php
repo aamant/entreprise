@@ -52,6 +52,14 @@ class Config
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(max="255")
      */
+    protected $quotation_export;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(max="255")
+     */
     protected $deposit_invoice_text = 'Acompte de 30% sur la proposition commerciale %s d\'un montant total de %s€';
 
     /**
@@ -185,5 +193,28 @@ class Config
     public function getDepositInvoicePercent()
     {
         return $this->deposit_invoice_percent;
+    }
+
+    /**
+     * Set quotation_export
+     *
+     * @param string $quotationExport
+     * @return Config
+     */
+    public function setQuotationExport($quotationExport)
+    {
+        $this->quotation_export = $quotationExport;
+
+        return $this;
+    }
+
+    /**
+     * Get quotation_export
+     *
+     * @return string 
+     */
+    public function getQuotationExport()
+    {
+        return $this->quotation_export;
     }
 }

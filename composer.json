@@ -41,7 +41,7 @@
         "genemu/form-bundle": "2.2.*",
         "nesbot/carbon": "~1.18",
         "knplabs/knp-snappy-bundle": "1.2.*",
-        "h4cc/wkhtmltopdf-amd64": "0.12.2.1"
+        "h4cc/wkhtmltopdf-amd64": "0.12.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

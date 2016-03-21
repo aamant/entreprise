@@ -3,7 +3,7 @@
 {% block main %}
 <h1 class="page-header">{{ customer.name }}</h1>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <address class="customer-contact">
@@ -47,10 +47,10 @@
                     </tr>
                     {% for invoice in invoices %}
                         <tr>
-                            <td>{{ invoice.number }}</td>
+                            <td><a type="button" data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">{{ invoice.number }}</a></td>
                             <td>
                                 {% if (invoice.quotation) %}
-                                    {{ invoice.quotation.number }}
+                                    <a href="{{ path('quotation.view', {'id': invoice.quotation.id}) }}">{{ invoice.quotation.number }}</a>
                                 {% endif %}
                             </td>
                             <td>{{ invoice.date|date("d/m/Y") }}</td>
@@ -67,7 +67,7 @@
                                     <span class="label label-success">Payé</span>
                                 {% endif %}
                             </td>
-                            <td style="width: 120px">
+                            <td style="width: 120px" class="text-right">
                                 <div class="btn-group">
                                     <a type="button" class="btn btn-default" data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">Voir</a>
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -106,7 +106,7 @@
                     </tr>
                     {% for quotation in quotations %}
                         <tr>
-                            <td>{{ quotation.number }}</td>
+                            <td><a href="{{ path('quotation.view', {'id': quotation.id}) }}">{{ quotation.number }}</a></td>
                             <td>{{ quotation.date|date("d/m/Y") }}</td>
                             <td>{{ quotation.total|number_format(2, '.', ',') }} €</td>
                             <td>
@@ -114,9 +114,9 @@
                             </td>
                             <td>{{ quotation.getBilled()|number_format(2, '.', ',') }} €</td>
                             <td>{{ quotation.getPaid()|number_format(2, '.', ',') }} €</td>
-                            <td style="width: 100px">
+                            <td style="width: 100px" class="text-right">
                                 <div class="btn-group">
-                                    <a type="button" class="btn btn-default" href="{{ path('quotation.view', {'id': quotation.id}) }}">Voir</a>
+                                    {#<a type="button" class="btn btn-default" href="{{ path('quotation.view', {'id': quotation.id}) }}">Voir</a>#}
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>

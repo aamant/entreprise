@@ -48,6 +48,11 @@ class Quotation
     protected $number;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $specifications;
+
+    /**
      * @ORM\Column(type="date", nullable=true)
      * @Assert\Date
      */
@@ -343,5 +348,52 @@ class Quotation
     public function getItems()
     {
         return $this->items;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocalizedDate()
+    {
+        setlocale(LC_TIME, 'fr_FR.UTF-8');
+        if ($this->getDate())
+            return Carbon::instance($this->getDate())->formatLocalized('%d %B %Y');
+        else
+            return Carbon::now()->formatLocalized('%d %B %Y');
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateLimit()
+    {
+        setlocale(LC_TIME, 'fr_FR.UTF-8');
+        if ($this->getDate())
+            return Carbon::instance($this->getDate())->addMonth()->formatLocalized('%d %B %Y');
+        else
+            return Carbon::now()->addMonth()->formatLocalized('%d %B %Y');
+    }
+
+    /**
+     * Set specifications
+     *
+     * @param string $specifications
+     * @return Quotation
+     */
+    public function setSpecifications($specifications)
+    {
+        $this->specifications = $specifications;
+
+        return $this;
+    }
+
+    /**
+     * Get specifications
+     *
+     * @return string 
+     */
+    public function getSpecifications()
+    {
+        return $this->specifications;
     }
 }

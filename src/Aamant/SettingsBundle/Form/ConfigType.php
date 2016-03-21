@@ -8,6 +8,7 @@ class ConfigType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('invoice_export', 'text', ['label' => 'Chemin des factures']);
+        $builder->add('quotation_export', 'text', ['label' => 'Chemin des devis']);
         $builder->add('invoice_increment', 'text', ['label' => 'Numero de facture']);
         $builder->add('deposit_invoice_text', 'text', ['label' => 'Texte des factures d\'acompte']);
         $builder->add('deposit_invoice_percent', 'text', ['label' => 'Pourcentage des facture d\'acompte']);

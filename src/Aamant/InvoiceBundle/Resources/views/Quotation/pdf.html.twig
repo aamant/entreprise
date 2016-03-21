@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Devis {{ quotation.number }}</title>
+    <link rel="stylesheet" href="{{ base_path }}/css/bootstrap.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+<div class="container" style="width: 1000px">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="panel panel-default" style="margin-bottom: 1px">
+                <div class="panel-heading">
+                    <h4>{{ company.name }}</h4>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        {{ company.address }} <br>
+                        {{ company.postcode }} {{ company.city }}<br>
+                        Tel: {{ company.phone }} <br>
+                        Email: {{ company.email }} <br>
+                        Site: {{ company.website }} <br>
+                        SIRET: {{ company.siret }} <br>
+                    </p>
+                </div>
+            </div>
+            <small>Dispensé d'immatriculation au Registre du Commerce et des Sociétés et au Répertoire des Métiers</small>
+            <br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <h1>Devis n° {{ quotation.number }}</h1>
+            <p>Date: {{ quotation.getLocalizedDate() }}</p>
+            <br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-5 col-xs-offset-7">
+            <h4>{{ customer.name }}</h4>
+            <p>
+                {{ customer.firstname }} {{ customer.lastname }}<br>
+                {{ customer.address }}<br>
+                {% if (customer.getAddressComp()) %}
+                    {{ customer.getAddressComp() }}<br>
+                {% endif %}
+                {{ customer.postcode }} {{ customer.city }}<br>
+            </p>
+        </div>
+    </div>
+    <br/><br/><br/>
+    <!-- / end client details section -->
+    {% if (quotation.specifications) %}
+        <p>Cahier des charges n° {{ quotation.specifications}}</p>
+    {% endif %}
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th style="width: 60%">
+                <h4>Description</h4>
+            </th>
+            <th>
+                <h4>Quantité</h4>
+            </th>
+            <th>
+                <h4>Prix Unitaire HT</h4>
+            </th>
+            <th>
+                <h4>Total HT</h4>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in quotation.items %}
+            <tr>
+                <td>{{ item.name|nl2br }}</td>
+                <td class="text-right">{{ item.quantity }}</td>
+                <td class="text-right">{{ item.price|number_format(2, ',', ' ') }} €</td>
+                <td class="text-right">{{ item.total|number_format(2, ',', ' ') }} €</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="row text-right">
+        <div class="col-xs-2 col-xs-offset-8">
+            <p>
+                        <span>
+                            Total HT : <br>
+                        </span>
+            </p>
+        </div>
+        <div class="col-xs-2">
+                    <span>
+                        {{ quotation.total|number_format(2, ',', ' ') }} € <br>
+                    </span>
+        </div>
+    </div>
+    <div class="row text-right">
+        <div class="col-xs-2 col-xs-offset-8">
+            <p>
+                <strong>
+                    NET A PAYER : <br>
+                </strong>
+            </p>
+        </div>
+        <div class="col-xs-2">
+            <strong>
+                {{ quotation.total|number_format(2, ',', ' ') }} € <br>
+            </strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-right">
+            <small>TVA non applicable, art. 293 B du CGI</small>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-xs-12">
+            <p>Devis valable jusqu'au {{ quotation.dateLimit }}</p>
+            <p>Le présent document est à retourner par courrier ({{ company.name }}, {{ company.address }}, {{ company.postcode }} {{ company.city }})  ou par mail ({{ company.email }}) avec la mention « Bon pour Accord », tampon de la société et signature et accompagné d'un acompte de 30 %.</p>
+            <span>Règlement</span>
+            <ul>
+                <li>Par chèque libellé à l'ordre de « {{ company.name }} »</li>
+                <li>Par virement</li>
+            </ul>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Informations bancaires</h4>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Banque</th>
+                    <th>Indicatif</th>
+                    <th>Numéro de compte</th>
+                    <th>Clé RIB</th>
+                    <th>Domiciliation</th>
+                </tr>
+                <tr>
+                    <td>{{ company.bank }}</td>
+                    <td>{{ company.indicatif }}</td>
+                    <td>{{ company.compte }}</td>
+                    <td>{{ company.keyrib }}</td>
+                    <td>{{ company.domiciliation }}</td>
+                </tr>
+                <tr>
+                    <th>IBAN</th>
+                    <td colspan="4">{{ company.iban }}</td>
+                </tr>
+                <tr>
+                    <th>Code BIC</th>
+                    <td colspan="4">{{ company.bic }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

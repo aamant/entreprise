@@ -3,13 +3,31 @@
 {% set customer = quotation.customer %}
 
 {% block main %}
-    <h1 class="page-header">Devis n°{{ quotation.number }}</h1>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-xs-12 text-right">
+            <a class="btn btn-default" href="{{ path('quotation_pdf', {'id': quotation.id}) }}">Gérérer le PDF</a>
+            {% if (quotation.status == 'wait') %}
+                <a class="btn btn-primary" href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Accepter</a>
+                <a class="btn btn-primary" href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'refused'}) }}">Refuser</a>
+            {% elseif (quotation.status == 'accept' or quotation.status == 'partial_invoiced') %}
+                <a class="btn btn-primary" href="{{ path('invoice.invoice.create', {'id': quotation.id, 'type': 'quotation'}) }}">Facturer</a>
+                <a class="btn btn-primary" href="{{ path('invoice.invoice.advance', {'id': quotation.id}) }}">Facturer un acompte</a>
+                <a class="btn btn-primary" href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'closed'}) }}">Cloturer</a>
+            {% elseif (quotation.status == 'wait' or quotation.status == 'accept') %}
+                <a class="btn btn-primary" href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'cancelled'}) }}">Annuler</a>
+            {% endif %}
+            <a class="btn btn-default" href="{{ path('invoice_quotations_list')}}">Fermer</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12"><h1 class="page-header">Devis n°{{ quotation.number }}</h1></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <address class="customer-contact">
-                        <strong>{{ customer.name }}</strong><br>
+                        <strong><a href="{{ path('customer.view', {'id': customer.id}) }}">{{ customer.name }}</a></strong><br>
                         {{ customer.firstname }} {{ customer.lastname }}<br>
                         {{ customer.address }}<br>
                         {% if customer.addressComp %}{{ customer.addressComp }}<br>{% endif %}
@@ -55,7 +73,7 @@
                 <td>{{ item.price|number_format(2, '.', ',') }} €</td>
                 <td>{{ item.total|number_format(2, '.', ',') }} €</td>
                 <td class="time-tracker">{{ item.pastTime|number_format(2, '.', ',') }}</td>
-                <td>
+                <td class="text-right">
                     <form action="{{ url('rest.timetracker.add', {'id': item.id}) }}" class="form-inline ajax-submit">
                         <div class="input-group">
                             <input type="text" name="value" class="form-control" placeholder="temps passé">
