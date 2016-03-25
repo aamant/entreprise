@@ -21,7 +21,7 @@ class DefaultController extends Controller
         $recipeAnnualPerMonth = $statistics->recipeAnnualPerMonth($company);
 
         // Attente de facturation
-        $repository = $this->getDoctrine()->getRepository("AamantInvoiceBundle:Quotation");
+        $repository = $this->getDoctrine()->getRepository("AppBundle:Quotation");
         $quotations = $repository->findWaitInvoice($company);
         $wait = 0;
         foreach ($quotations as $quotation){
@@ -29,7 +29,7 @@ class DefaultController extends Controller
         }
 
         // Attente de paiement
-        $repository = $this->getDoctrine()->getRepository("AamantInvoiceBundle:Invoice");
+        $repository = $this->getDoctrine()->getRepository("AppBundle:Invoice");
         $invoices = $repository->findWaitPaid($company);
         $paid = $repository->getWaitToPaid($company);
 

@@ -17,15 +17,10 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
-            new Aamant\UserBundle\AamantUserBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
-            new Aamant\CustomerBundle\AamantCustomerBundle(),
             new Genemu\Bundle\FormBundle\GenemuFormBundle(),
-            new Aamant\InvoiceBundle\AamantInvoiceBundle(),
-            new Aamant\SettingsBundle\AamantSettingsBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
-            new Aamant\StatisticBundle\AamantStatisticBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

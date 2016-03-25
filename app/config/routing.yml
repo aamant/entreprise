@@ -1,28 +1,3 @@
-aamant_statistic:
-    resource: "@AamantStatisticBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-aamant_settings:
-    resource: "@AamantSettingsBundle/Controller/"
-    type:     annotation
-    prefix:   settings
-
-aamant_invoice:
-    resource: "@AamantInvoiceBundle/Controller/"
-    type:     annotation
-    prefix:   sales
-
-aamant_customer:
-    resource: "@AamantCustomerBundle/Controller/"
-    type:     annotation
-    prefix:   customers
-
-aamant_user:
-    resource: "@AamantUserBundle/Controller/"
-    type:     annotation
-    prefix:   users
-
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

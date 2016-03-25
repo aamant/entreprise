@@ -4,6 +4,11 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    statistics.dashbord:
+        class: AppBundle\Service\Dashbord
+        arguments: ["@doctrine.orm.entity_manager", "%max_invoiced_per_year%"]
+
+    payment.listener:
+        class: AppBundle\Listener\Status
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
