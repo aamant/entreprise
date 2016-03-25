@@ -33,6 +33,25 @@ class QuotationRepository extends EntityRepository
         }
     }
 
+    public function findCurrent(Company $company)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery("
+                SELECT q, c, i FROM AppBundle:Quotation q
+                JOIN q.customer c
+                LEFT JOIN q.invoices i
+                WHERE q.company = :company
+                AND q.status IN ('accept', 'partial_invoiced', 'wait')
+                ORDER BY q.date DESC
+            ")->setParameter('company', $company);
+
+        try {
+            return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
     public function findWaitInvoice(Company $company)
     {
         $query = $this->getEntityManager()

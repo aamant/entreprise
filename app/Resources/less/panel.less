@@ -1,4 +1,16 @@
 
-.panel-stat {
-  .panel-variant(@panel-stat-border, @panel-stat-text, @panel-stat-heading-bg, @panel-stat-border);
+.panel-default {
+  .panel-variant(@gray-lighter, @gray, #ffffff, @gray-lighter);
+  position: relative;
+  .panel-heading {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 1.2em;
+  }
+  .box-shadow(0px 0px 8px lighten(rgba(0,0,0,0.06), 50%));
+  canvas {
+    .center-block();
+    width: 100% !important;
+  }
+  .table th {color: @gray}
 }

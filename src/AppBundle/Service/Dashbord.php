@@ -59,24 +59,24 @@ class Dashbord
             [
                 'label' => 'Encaissé',
                 'value' => $paid,
-                'color' => '#bf616a',
+                'color' => 'primary',
                 'highlight' => '#bf616a'
             ],
             [
                 'label' => 'Attente de paiement',
                 'value' => number_format($wait_paid, 2, '.', ''),
-                'color' => '#d08770',
+                'color' => 'warning',
                 'highlight' => '#d08770'
             ],
             [
                 'label' => 'Attente de facturation',
                 'value' => $wait_invoiced,
-                'color' => '#ab7967',
+                'color' => 'warning',
                 'highlight' => '#ab7967'
             ], [
                 'label' => 'Reste',
                 'value' => $this->max_invoiced_per_year - ($paid + $wait_paid + $wait_invoiced),
-                'color' => '#96b5b4',
+                'color' => 'info',
                 'highlight' => '#96b5b4'
             ]
         ];
