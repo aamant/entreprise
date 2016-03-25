@@ -9,16 +9,17 @@
     {% block stylesheets %}
         {% stylesheets
             '%kernel.root_dir%/Resources/less/application.less'
+            '%kernel.root_dir%/Resources/bower_components/datatables/media/css/dataTables.bootstrap.css'
             filter='less' filter='cssrewrite'
             output='css/compiled/main.css' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
     {% endblock %}
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
     <link rel="icon" type="image/png" href="/favicon.png" />
-
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -39,15 +40,27 @@
 <!-- Scripts -->
 {% block javascripts %}
     {% javascripts
-    '%kernel.root_dir%/../vendor/jquery/jquery/jquery-1.11.1.js'
-    '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js'
+    '%kernel.root_dir%/Resources/bower_components/jquery/dist/jquery.js'
+    '%kernel.root_dir%/Resources/bower_components/bootstrap/dist/js/bootstrap.min.js'
     '%kernel.root_dir%/Resources/bower_components/Chart.js/Chart.js'
     '%kernel.root_dir%/Resources/script/invoice.js'
     '%kernel.root_dir%/Resources/script/quotation.js'
+    '%kernel.root_dir%/Resources/bower_components/datatables/media/js/jquery.dataTables.js'
+    '%kernel.root_dir%/Resources/bower_components/datatables/media/js/dataTables.bootstrap.js'
     output='js/compiled/main.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
+<script>
+    $(document).ready(function() {
+        $('.table-dynamic').DataTable({
+            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]],
+            language: {
+                search: "Rechercher"
+            }
+        });
+    } );
+</script>
 {% block script %}{% endblock %}
 </body>
 </html>

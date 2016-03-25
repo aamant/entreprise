@@ -25,6 +25,7 @@
     <div class="row">
         <div class="col-sm-6">
             <div class="panel panel-default">
+                <div class="panel-heading">Client</div>
                 <div class="panel-body">
                     <address class="customer-contact">
                         <strong><a href="{{ path('customer.view', {'id': customer.id}) }}">{{ customer.name }}</a></strong><br>
@@ -39,6 +40,7 @@
         </div>
         <div class="col-sm-6">
             <div class="panel panel-default">
+                <div class="panel-heading">Information</div>
                 <div class="panel-body">
                     <dl class="dl-horizontal quotation-view-main">
                         <dt>Date</dt>
@@ -110,7 +112,7 @@
             </tr>
             {% for invoice in quotation.invoices %}
                 <tr>
-                    <td><a type="button" class="btn btn-link" data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">{{ invoice.number }}</a></td>
+                    <td><a data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">{{ invoice.number }}</a></td>
                     <td><a href="{{ path('customer.view', {'id': invoice.customer.id}) }}">{{ invoice.customer.name }}</a></td>
                     <td>{{ invoice.customer.firstname }} {{ invoice.customer.lastname }}</td>
                     <td>{{ invoice.date|date("d/m/Y") }}</td>

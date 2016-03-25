@@ -1,13 +1,14 @@
 {% extends 'layout/layout.html.twig' %}
 
 {% block main %}
-<h1 class="page-header">{{ customer.name }}</h1>
     <div class="row">
         <div class="col-sm-6">
             <div class="panel panel-default">
+                <div class="panel-heading">Client</div>
                 <div class="panel-body">
                     <address class="customer-contact">
-                        <strong>{{ customer.firstname }} {{ customer.lastname }}</strong><br>
+                        <b>{{ customer.name }}</b><br>
+                        {{ customer.firstname }} {{ customer.lastname }}<br>
                         {{ customer.address }}<br>
                         {% if customer.addressComp %}{{ customer.addressComp }}<br>{% endif %}
                         {{ customer.postcode }}, {{ customer.city }}, {{ customer.country }}<br>
@@ -18,6 +19,7 @@
         </div>
         <div class="col-sm-6">
             <div class="panel panel-default">
+                <div class="panel-heading">Chiffre d'affaire</div>
                 <div class="panel-body">
                     <dl class="dl-horizontal customer-recipe">
                         <dt>Chiffre d'affaire total</dt>
@@ -35,58 +37,64 @@
         <div class="col-sm-12">
             <div class="panel panel-default">
                 <div class="panel-heading"><h2>Factures</h2></div>
-                <table class="table table-striped">
-                    <tr>
-                        <th>Numero</th>
-                        <th>Devis</th>
-                        <th>Date</th>
-                        <th>Total</th>
-                        <th>Encaissé</th>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                    {% for invoice in invoices %}
+                <div class="panel-body">
+                    <table class="table table-striped table-dynamic">
+                        <thead>
                         <tr>
-                            <td><a type="button" data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">{{ invoice.number }}</a></td>
-                            <td>
-                                {% if (invoice.quotation) %}
-                                    <a href="{{ path('quotation.view', {'id': invoice.quotation.id}) }}">{{ invoice.quotation.number }}</a>
-                                {% endif %}
-                            </td>
-                            <td>{{ invoice.date|date("d/m/Y") }}</td>
-                            <td>{{ invoice.total }}</td>
-                            <td>{{ invoice.getPaid()|number_format(2, '.', ',') }} €</td>
-                            <td>
-                                {% if invoice.number == null %}
-                                    <span class="label label-warning">Brouillon</span>
-                                {% elseif invoice.status != 'close' and date('-1week') > date(invoice.date)  %}
-                                    <span class="label label-danger">Retard de paiement</span>
-                                {% elseif (invoice.status != 'close') %}
-                                    <span class="label label-warning">Attente de paiement</span>
-                                {% else %}
-                                    <span class="label label-success">Payé</span>
-                                {% endif %}
-                            </td>
-                            <td style="width: 120px" class="text-right">
-                                <div class="btn-group">
-                                    <a type="button" class="btn btn-default" data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">Voir</a>
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown menu action facture">
-                                        {% if invoice.number == '' %}
-                                            <li role="presentation"><a href="{{ path('invoice_invoice', {'id': invoice.id}) }}">Edit</a></li>
-                                            <li role="presentation"><a href="{{ path('invoice_delete') }}">Delete</a></li>
-                                        {% else %}
-                                            <li role="presentation"><a href="{{ path('invoice_pdf', {'id': invoice.id}) }}">Générer le PDF</a></li>
-                                        {% endif %}
-                                    </ul>
-                                </div>
-                            </td>
+                            <th>Numero</th>
+                            <th>Devis</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Encaissé</th>
+                            <th>&nbsp;</th>
+                            <th data-orderable="false">&nbsp;</th>
                         </tr>
-                    {% endfor %}
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for invoice in invoices %}
+                            <tr>
+                                <td><a type="button" data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">{{ invoice.number }}</a></td>
+                                <td>
+                                    {% if (invoice.quotation) %}
+                                        <a href="{{ path('quotation.view', {'id': invoice.quotation.id}) }}">{{ invoice.quotation.number }}</a>
+                                    {% endif %}
+                                </td>
+                                <td>{{ invoice.date|date("d/m/Y") }}</td>
+                                <td>{{ invoice.total }}</td>
+                                <td>{{ invoice.getPaid()|number_format(2, '.', ',') }} €</td>
+                                <td>
+                                    {% if invoice.number == null %}
+                                        <span class="label label-warning">Brouillon</span>
+                                    {% elseif invoice.status != 'close' and date('-1week') > date(invoice.date)  %}
+                                        <span class="label label-danger">Retard de paiement</span>
+                                    {% elseif (invoice.status != 'close') %}
+                                        <span class="label label-warning">Attente de paiement</span>
+                                    {% else %}
+                                        <span class="label label-success">Payé</span>
+                                    {% endif %}
+                                </td>
+                                <td style="width: 120px" class="text-right">
+                                    <div class="btn-group">
+                                        <a type="button" class="btn btn-default" data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">Voir</a>
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown menu action facture">
+                                            {% if invoice.number == '' %}
+                                                <li role="presentation"><a href="{{ path('invoice_invoice', {'id': invoice.id}) }}">Edit</a></li>
+                                                <li role="presentation"><a href="{{ path('invoice_delete') }}">Delete</a></li>
+                                            {% else %}
+                                                <li role="presentation"><a href="{{ path('invoice_pdf', {'id': invoice.id}) }}">Générer le PDF</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

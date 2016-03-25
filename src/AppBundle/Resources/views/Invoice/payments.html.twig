@@ -13,7 +13,7 @@
         </tr>
         {% for payment in payments %}
             <tr>
-                <td>{{ payment.customer.name }}</td>
+                <td><a href="{{ path('customer.view', {'id': payment.customer.id}) }}">{{ payment.customer.name }}</a></td>
                 <td>{{ payment.total }}</td>
                 <td>{{ payment.date|date("d/m/Y") }}</td>
                 <td>{{ payment.method }}</td>

@@ -5,52 +5,62 @@
         <div class="panel-heading">
             <h1>Devis</h1>
         </div>
-        <table class="table table-striped">
-            <tr>
-                <th>Numero</th>
-                <th>Client</th>
-                <th>Contact</th>
-                <th>Date</th>
-                <th>Total</th>
-                <th>Statut</th>
-                <th>Facturé</th>
-                <th>Encaissé</th>
-                <th>&nbsp;</th>
-            </tr>
-            {% for quotation in quotations %}
-                <tr>
-                    <td><a href="{{ path('quotation.view', {'id': quotation.id}) }}">{{ quotation.number }}</a></td>
-                    <td><a href="{{ path('customer.view', {'id': quotation.customer.id}) }}">{{ quotation.customer.name }}</a></td>
-                    <td>{{ quotation.customer.firstname }} {{ quotation.customer.lastname }}</td>
-                    <td>{{ quotation.date|date("d/m/Y") }}</td>
-                    <td>{{ quotation.total|number_format(2, '.', ',') }} €</td>
-                    <td>
-                        <span class="label label-primary">{{ quotation.getStatusName() }}</span>
-                    </td>
-                    <td>{{ quotation.getBilled()|number_format(2, '.', ',') }} €</td>
-                    <td>{{ quotation.getPaid()|number_format(2, '.', ',') }} €</td>
-                    <td style="width: 100px">
-                        <div class="btn-group">
-                            <a type="button" class="btn btn-default btn-sm" href="{{ path('quotation.view', {'id': quotation.id}) }}">Détail</a>
-                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-                                {% if (quotation.status == 'wait') %}
-                                    <li role="button"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Accepter</a></li>
-                                    <li role="button"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'refused'}) }}">Refuser</a></li>
-                                {% elseif (quotation.status == 'accept' or quotation.status == 'partial_invoiced') %}
-                                    <li role="button"><a href="{{ path('invoice.invoice.create', {'id': quotation.id, 'type': 'quotation'}) }}">Facturer</a></li>
-                                    <li role="button"><a href="{{ path('invoice.invoice.advance', {'id': quotation.id}) }}">Facturer un acompte</a></li>
-                                    <li role="button"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'closed'}) }}">Cloturer</a></li>
-                                {% elseif (quotation.status == 'wait' or quotation.status == 'accept') %}
-                                    <li role="button"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'cancelled'}) }}">Annuler</a></li>
-                                {% endif %}
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+        <div class="panel-body">
+            <table class="table table-striped table-dynamic" data-order="[[ 0, &quot;desc&quot; ]]">
+                <thead>
+                    <tr>
+                        <th>Numero</th>
+                        <th>Client</th>
+                        <th>Contact</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Statut</th>
+                        <th>Facturé</th>
+                        <th>Encaissé</th>
+                        <th data-orderable="false">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for quotation in quotations %}
+                    <tr>
+                        <td><a href="{{ path('quotation.view', {'id': quotation.id}) }}">{{ quotation.number }}</a></td>
+                        <td><a href="{{ path('customer.view', {'id': quotation.customer.id}) }}">{{ quotation.customer.name }}</a></td>
+                        <td>{{ quotation.customer.firstname }} {{ quotation.customer.lastname }}</td>
+                        <td>{{ quotation.date|date("d/m/Y") }}</td>
+                        <td>{{ quotation.total|number_format(2, '.', ',') }} €</td>
+                        <td>
+                            <span class="label label-primary">{{ quotation.getStatusName() }}</span>
+                        </td>
+                        <td>{{ quotation.getBilled()|number_format(2, '.', ',') }} €</td>
+                        <td>{{ quotation.getPaid()|number_format(2, '.', ',') }} €</td>
+                        <td style="width: 100px">
+                            <div class="btn-group">
+                                <a type="button" class="btn btn-default btn-sm" href="{{ path('quotation.view', {'id': quotation.id}) }}">Détail</a>
+                                <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                                    {% if (quotation.status == 'wait') %}
+                                        <li role="button"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Accepter</a></li>
+                                        <li role="button"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'refused'}) }}">Refuser</a></li>
+                                    {% elseif (quotation.status == 'accept' or quotation.status == 'partial_invoiced') %}
+                                        <li role="button"><a href="{{ path('invoice.invoice.create', {'id': quotation.id, 'type': 'quotation'}) }}">Facturer</a></li>
+                                        <li role="button"><a href="{{ path('invoice.invoice.advance', {'id': quotation.id}) }}">Facturer un acompte</a></li>
+                                        <li role="button"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'closed'}) }}">Cloturer</a></li>
+                                    {% elseif (quotation.status == 'wait' or quotation.status == 'accept') %}
+                                        <li role="button"><a href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'cancelled'}) }}">Annuler</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+{% endblock %}
+
+{% block script %}
+
 {% endblock %}
