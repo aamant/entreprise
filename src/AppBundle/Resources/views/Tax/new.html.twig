@@ -1,0 +1,18 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block main -%}
+    <div class="panel panel-default">
+        <div class="panel-heading"><h1>Tax creation</h1></div>
+        <div class="panel-body">
+            {{ form(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block menusidebar %}
+<li>
+    <a href="{{ path('tax') }}">
+        Back to the list
+    </a>
+</li>
+{% endblock %}
