@@ -1,0 +1,50 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block main -%}
+    <div class="row">
+        <div class="col-xs-12 text-right">
+            <a class="btn btn-default" href="{{ url('fos_user_registration_register') }}">Nouvel utilisateur</a>
+            <a class="btn btn-default" href="{{ path('company_new') }}">Nouvelle entreprise</a>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h1>Company list</h1></div>
+                <div class="panel-body">
+                    <table class="table table-responsive table-dynamic">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Postcode</th>
+                            <th>City</th>
+                            <th>Country</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Website</th>
+                            <th>Siren</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for entity in entities %}
+                            <tr>
+                                <td>{{ entity.id }}</td>
+                                <td>{{ entity.name }}</td>
+                                <td>{{ entity.postcode }}</td>
+                                <td>{{ entity.city }}</td>
+                                <td>{{ entity.country }}</td>
+                                <td>{{ entity.email }}</td>
+                                <td>{{ entity.phone }}</td>
+                                <td>{{ entity.website }}</td>
+                                <td>{{ entity.siren }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

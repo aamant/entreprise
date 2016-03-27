@@ -18,8 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new FOS\UserBundle\FOSUserBundle(),
-            new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
-            new Genemu\Bundle\FormBundle\GenemuFormBundle(),
+//            new Genemu\Bundle\FormBundle\GenemuFormBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
         );
 

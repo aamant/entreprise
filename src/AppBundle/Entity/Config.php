@@ -36,12 +36,12 @@ class Config
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      */
-    protected $invoice_increment;
+    protected $invoice_increment = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max="255")
      */
     protected $invoice_export;
@@ -49,7 +49,7 @@ class Config
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max="255")
      */
     protected $quotation_export;

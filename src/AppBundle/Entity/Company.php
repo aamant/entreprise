@@ -27,8 +27,7 @@ class Company
     protected $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max="255")
      */
     protected $address;
@@ -40,57 +39,49 @@ class Company
     protected $address_comp;
 
     /**
-     * @ORM\Column(type="string", length=10)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=10, nullable=true)
      * @Assert\Length(max="10")
      */
     protected $postcode;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Length(max="100")
      */
     protected $city;
 
     /**
-     * @ORM\Column(type="string", length=2)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=2, nullable=true)
      * @Assert\Country
      */
     protected $country;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Email
      */
     protected $email;
 
     /**
-     * @ORM\Column(type="string", length=20)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=20, nullable=true)
      * @Assert\Length(max="20")
      */
     protected $phone;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Url
      */
     protected $website;
 
     /**
-     * @ORM\Column(type="string", length=14)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=14, nullable=true)
      * @Assert\Length(max="14")
      */
     protected $siret;
 
     /**
-     * @ORM\Column(type="string", length=9)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=9, nullable=true)
      * @Assert\Length(max="9")
      */
     protected $siren;
@@ -115,43 +106,43 @@ class Company
     protected $config;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max="255")
      */
     protected $bank;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max="255")
      */
     protected $indicatif;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max="255")
      */
     protected $compte;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max="255")
      */
     protected $keyrib;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max="255")
      */
     protected $domiciliation;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max="255")
      */
     protected $iban;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max="255")
      */
     protected $bic;

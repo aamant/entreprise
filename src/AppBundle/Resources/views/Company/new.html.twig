@@ -1,0 +1,20 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block main -%}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h1>Company creation</h1></div>
+                <div class="panel-body">
+                    {{ form(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block menusidebar %}
+    {{ parent() }}
+    <li><a href="{{ path('company') }}">Retour à la liste</a></li>
+{% endblock %}
