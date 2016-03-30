@@ -43,6 +43,11 @@ class QuotationController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()){
+
+            if ($form->get('draft')->isClicked()){
+                $quotation->setStatus(Quotation::STATUS_DRAFT);
+                $quotation->setNumber('');
+            }
             $em = $this->getDoctrine()->getManager();
             $em->persist($quotation);
             $em->flush();
@@ -52,10 +57,53 @@ class QuotationController extends Controller
                 'Vos changements ont été sauvegardés!'
             );
 
+            if ($form->get('draft')->isClicked()){
+                return $this->redirect($this->generateUrl('quotation.edit', ['quotation' => $quotation->getId()]));
+            }
+
             return $this->redirect($this->generateUrl('quotation.view', ['id' => $quotation->getId()]));
         }
 
         return ['form' => $form->createView()];
+    }
+
+    /**
+     * @Route("quotation/edit/{quotation}", name="quotation.edit")
+     * @Template()
+     */
+    public function editAction(Request $request, Quotation $quotation)
+    {
+        $increment = $this->getDoctrine()
+            ->getRepository('AppBundle:Quotation')
+            ->getMaxNumber($this->getUser()->getCompany());
+        $quotation->setNumber('1'.date('Ym-').sprintf("%'.03d", ++$increment));
+
+        $form = $this->createForm(new QuotationType(), $quotation);
+        $form->handleRequest($request);
+
+        if ($form->isValid()){
+
+            if ($form->get('draft')->isClicked()){
+                $quotation->setStatus(Quotation::STATUS_DRAFT);
+                $quotation->setNumber('');
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($quotation);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'Vos changements ont été sauvegardés!'
+            );
+
+            if ($form->get('draft')->isClicked()){
+                return $this->redirect($this->generateUrl('quotation.edit', ['quotation' => $quotation->getId()]));
+            }
+            return $this->redirect($this->generateUrl('quotation.view', ['id' => $quotation->getId()]));
+        }
+
+        return $this->render('AppBundle:Quotation:create.html.twig', ['form' => $form->createView()]);
     }
 
     /**

@@ -34,7 +34,8 @@ class QuotationType extends AbstractType
         ));
         $builder->add('total');
 
-        $builder->add('save', 'submit', ['label' => 'Enregistrer']);
+        $builder->add('draft', 'submit', ['label' => 'Enregistrer', 'attr' => array('class' => 'btn btn-default')]);
+        $builder->add('save', 'submit', ['label' => 'Terminer', 'attr' => array('class' => 'btn btn-danger')]);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

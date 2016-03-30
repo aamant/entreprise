@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Quotation
 {
+    const STATUS_DRAFT = "draft";
     const STATUS_ACCEPT = "accept";
     const STATUS_PARTIAL_INVOICED = "partial_invoiced";
     const STATUS_WAIT = "wait";
