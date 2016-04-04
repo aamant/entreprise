@@ -4,6 +4,8 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Company;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 /**
  * TaxRepository
@@ -21,10 +23,13 @@ class TaxRepository extends EntityRepository
               WHERE t.company = :company
               ORDER BY t.id DESC
             ')
+                ->setMaxResults(1)
                 ->setParameter('company', $company->getId());
             
             return $query->getSingleResult();
-        } catch (\Doctrine\ORM\NoResultException $e) {
+        } catch (NoResultException $e) {
+            return null;
+        } catch (NonUniqueResultException $e){
             return null;
         }
     }
