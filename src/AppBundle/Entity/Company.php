@@ -101,6 +101,13 @@ class Company
     /**
      * @var ArrayCollection
      *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Tax", mappedBy="company", cascade={"persist"})
+     */
+    protected $tax;
+
+    /**
+     * @var ArrayCollection
+     *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Config", mappedBy="company", cascade={"persist"})
      */
     protected $config;
@@ -151,6 +158,7 @@ class Company
     {
         $this->users = new ArrayCollection();
         $this->customers = new ArrayCollection();
+        $this->tax = new ArrayCollection();
     }
 
     /**
@@ -664,5 +672,38 @@ class Company
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * Add tax
+     *
+     * @param \AppBundle\Entity\Tax $tax
+     * @return Company
+     */
+    public function addTax(\AppBundle\Entity\Tax $tax)
+    {
+        $this->tax[] = $tax;
+
+        return $this;
+    }
+
+    /**
+     * Remove tax
+     *
+     * @param \AppBundle\Entity\Tax $tax
+     */
+    public function removeTax(\AppBundle\Entity\Tax $tax)
+    {
+        $this->tax->removeElement($tax);
+    }
+
+    /**
+     * Get tax
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTax()
+    {
+        return $this->tax;
     }
 }

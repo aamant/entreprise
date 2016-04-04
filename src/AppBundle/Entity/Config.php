@@ -71,6 +71,14 @@ class Config
     protected $deposit_invoice_percent = 0.3;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="float")
+     * @Assert\NotBlank()
+     */
+    protected $tax_rate = 0;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -216,5 +224,28 @@ class Config
     public function getQuotationExport()
     {
         return $this->quotation_export;
+    }
+
+    /**
+     * Set tax_rate
+     *
+     * @param float $taxRate
+     * @return Config
+     */
+    public function setTaxRate($taxRate)
+    {
+        $this->tax_rate = $taxRate;
+
+        return $this;
+    }
+
+    /**
+     * Get tax_rate
+     *
+     * @return float 
+     */
+    public function getTaxRate()
+    {
+        return $this->tax_rate;
     }
 }

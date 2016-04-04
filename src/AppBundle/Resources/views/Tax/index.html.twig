@@ -6,25 +6,21 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><h1>Cotisations</h1></div>
                 <div class="panel-body">
-                    <table class="table table-responsive table-dynamic">
+                    <table class="table table-responsive table-dynamic" data-order="[[ 0, &quot;desc&quot; ], [1, &quot;desc&quot; ]]">
                         <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Month</th>
-                            <th>Year</th>
-                            <th>Estimate</th>
-                            <th>Value</th>
+                            <th>Année</th>
+                            <th>Mois</th>
+                            <th class="text-right">Montant</th>
                             <th data-orderable="false">&nbsp;</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for entity in entities %}
                             <tr>
-                                <td>{{ entity.id }}</td>
-                                <td>{{ entity.month }}</td>
                                 <td>{{ entity.year }}</td>
-                                <td>{{ entity.estimate }}</td>
-                                <td>{{ entity.value }}</td>
+                                <td>{{ entity.monthStr }}</td>
+                                <td class="text-right">{{ entity.value|number_format(2, ',', ' ') }} €</td>
                                 <td class="text-right"><a class="btn btn-default btn-sm" href="{{ path('tax_edit', { 'id': entity.id }) }}">Modifier</a></td>
                             </tr>
                         {% endfor %}

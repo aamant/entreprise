@@ -86,6 +86,8 @@ class QuotationController extends Controller
             if ($form->get('draft')->isClicked()){
                 $quotation->setStatus(Quotation::STATUS_DRAFT);
                 $quotation->setNumber('');
+            } else {
+                $quotation->setStatus(Quotation::STATUS_WAIT);
             }
 
             $em = $this->getDoctrine()->getManager();

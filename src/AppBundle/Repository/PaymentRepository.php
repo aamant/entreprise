@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Customer;
 use AppBundle\Entity\Company;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
@@ -82,6 +83,22 @@ class PaymentRepository extends EntityRepository
         }
     }
 
+    public function paymentForYearAndMonth(Company $company, $year, $month)
+    {
+        $query = $this->getEntityManager()->getConnection()->prepare('
+                SELECT SUM(p.total) as total FROM payment p
+                WHERE company_id = :company
+                AND YEAR(p.date) = :year AND MONTH(p.date) = :month
+            ');
+        $query->execute(['company' => $company->getId(), 'year' => $year, 'month' => $month]);
+
+        try {
+            return $query->fetchColumn();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
     public function paymentPerYearAndMonth(Company $company)
     {
         $query = $this->getEntityManager()->getConnection()->prepare('
@@ -142,6 +159,23 @@ class PaymentRepository extends EntityRepository
         try {
             return $query->fetchColumn();
         } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function getFirst(Company $company)
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT p.date FROM AppBundle:Payment p
+            WHERE p.company = :company
+            ORDER BY p.date ASC
+        ')
+            ->setMaxResults(1)
+            ->setParameter('company', $company->getId());
+
+        try {
+            return $query->getSingleScalarResult();
+        } catch (NonUniqueResultException $e) {
             return null;
         }
     }

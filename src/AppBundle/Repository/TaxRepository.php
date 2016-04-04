@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Company;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class TaxRepository extends EntityRepository
 {
+    public function getLast(Company $company)
+    {
+        try {
+            $query = $this->getEntityManager()->createQuery('
+              SELECT t.year, t.month FROM AppBundle:Tax t 
+              WHERE t.company = :company
+              ORDER BY t.id DESC
+            ')
+                ->setParameter('company', $company->getId());
+            
+            return $query->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
 }

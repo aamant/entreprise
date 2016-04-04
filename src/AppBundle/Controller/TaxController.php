@@ -31,6 +31,7 @@ class TaxController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('AppBundle:Tax')->findAll();
+        $entities = $this->getUser()->getCompany()->getTax();
 
         return array(
             'entities' => $entities,
@@ -46,6 +47,7 @@ class TaxController extends Controller
     public function createAction(Request $request)
     {
         $entity = new Tax();
+        $entity->setCompany($this->getUser()->getCompany());
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -91,9 +93,30 @@ class TaxController extends Controller
      */
     public function newAction()
     {
+        $company = $this->getUser()->getCompany();
+        $last = $this->getDoctrine()->getRepository('AppBundle:Tax')
+            ->getLast($company);
+
+        $d = Carbon::create();
+        if ($last){
+            $d->setDate($last['year'], $last['month'] + 1, 1);
+        }
+        else {
+            $first = $this->getDoctrine()->getRepository('AppBundle:Payment')
+                ->getFirst($company);
+            if ($first){
+                $first = explode('-', $first);
+                $d->setDate($first[0], $first[1], 1);
+            }
+        }
+        
         $entity = new Tax();
-        $entity->setYear(Carbon::create()->year);
-        $entity->setMonth(Carbon::create()->month);
+        $entity->setYear($d->year);
+        $entity->setMonth($d->month);
+
+        $value = $this->getDoctrine()->getRepository('AppBundle:Payment')
+            ->paymentForYearAndMonth($company, $entity->getYear(), $entity->getMonth());
+        $entity->setValue($value * $company->getConfig()->getTaxRate());
 
         $form   = $this->createCreateForm($entity);
 
