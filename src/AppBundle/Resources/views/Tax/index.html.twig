@@ -19,7 +19,7 @@
                         {% for entity in entities %}
                             <tr>
                                 <td>{{ entity.year }}</td>
-                                <td>{{ entity.monthStr }}</td>
+                                <td data-order="{{ entity.month }}">{{ entity.monthStr }}</td>
                                 <td class="text-right">{{ entity.value|number_format(2, ',', ' ') }} €</td>
                                 <td class="text-right"><a class="btn btn-default btn-sm" href="{{ path('tax_edit', { 'id': entity.id }) }}">Modifier</a></td>
                             </tr>
