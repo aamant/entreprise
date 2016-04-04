@@ -17,7 +17,7 @@
                     {% for quotation in quotations %}
                         <tr>
                             <td>
-                                <a href="{{ path('quotation.view', {'id': quotation.id}) }}">{{ quotation.number }}</a>
+                                <a href="{{ path('quotation.view', {'id': quotation.id}) }}" data-toggle="tooltip" title="{{ quotation.description }}">{{ quotation.number }}</a>
                             </td>
                             <td><a href="{{ path('customer.view', {'id' : quotation.customer.id }) }}">{{ quotation.customer.name }}</a></td>
                             <td>{{ quotation.total|number_format(2, ',', '.') }} €</td>
@@ -46,7 +46,7 @@
                             <td><a data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">{{ invoice.number }}</a></td>
                             <td>
                                 {% if (invoice.quotation) %}
-                                    <a href="{{ path('quotation.view', {'id': invoice.quotation.id}) }}">{{ invoice.quotation.number }}</a>
+                                    <a href="{{ path('quotation.view', {'id': invoice.quotation.id}) }}" data-toggle="tooltip" title="{{ invoice.quotation.description }}">{{ invoice.quotation.number }}</a>
                                 {% endif %}
                             </td>
                             <td><a href="{{ path('customer.view', {'id' : invoice.customer.id }) }}">{{ invoice.customer.name }}</a></td>
@@ -148,5 +148,9 @@
     };
     Chart.defaults.global.maintainAspectRatio = true;
     var graph1 = new Chart(ctx).Line(data);
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>
 {% endblock %}
