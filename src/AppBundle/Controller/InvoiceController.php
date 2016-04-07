@@ -226,14 +226,6 @@ class InvoiceController extends Controller
 
             $filename = $config->getInvoiceExport().'/Facture-'.$invoice->getNumber().'.pdf';
 
-            $html = $this->render('AppBundle:Default:view.html.twig', [
-                'invoice'   => $invoice,
-                'user'      => $user,
-                'company'   => $user->getCompany(),
-                'customer'  => $invoice->getCustomer(),
-                'base_path'      => realpath($this->get('kernel')->getRootDir() . '/../web/')
-            ])->getContent();
-
             $this->get('knp_snappy.pdf')->generateFromHtml(
                 $this->renderView(
                     'AppBundle:Invoice:view.html.twig',
