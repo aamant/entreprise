@@ -39,7 +39,7 @@ class QuotationController extends Controller
         $quotation->setDate(Carbon::now());
         $quotation->addItem(new Quotation\Item());
 
-        $form = $this->createForm(new QuotationType(), $quotation);
+        $form = $this->createForm(QuotationType::class, $quotation);
         $form->handleRequest($request);
 
         if ($form->isValid()){
@@ -78,7 +78,7 @@ class QuotationController extends Controller
             ->getMaxNumber($this->getUser()->getCompany());
         $quotation->setNumber('1'.date('Ym-').sprintf("%'.03d", ++$increment));
 
-        $form = $this->createForm(new QuotationType(), $quotation);
+        $form = $this->createForm(QuotationType::class, $quotation);
         $form->handleRequest($request);
 
         if ($form->isValid()){
@@ -177,7 +177,7 @@ class QuotationController extends Controller
             $quotation = $this->getDoctrine()
                 ->getRepository('AppBundle:Quotation')
                 ->find($id);
-            $user = $this->get('security.context')->getToken()->getUser();
+            $user = $this->getUser();
             $config = $user->getCompany()->getConfig();
 
             $filename = $config->getQuotationExport().'/Devis-'.$quotation->getNumber().'.pdf';

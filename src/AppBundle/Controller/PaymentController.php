@@ -36,7 +36,7 @@ class PaymentController extends Controller
         $payment->setCompany($this->getUser()->getCompany());
         $payment->setDate(Carbon::now());
 
-        $form = $this->createForm(new PaymentType(), $payment);
+        $form = $this->createForm(PaymentType::class, $payment);
         $form->handleRequest($request);
 
         if ($form->isValid()){

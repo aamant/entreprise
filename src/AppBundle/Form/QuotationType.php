@@ -2,9 +2,14 @@
 
 use AppBundle\Form\Quotation\ItemType;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class QuotationType extends AbstractType
 {
@@ -12,7 +17,7 @@ class QuotationType extends AbstractType
     {
         $quotation = $options['data'];
         $company = $quotation->getCompany();
-        $builder->add('customer', 'entity', array(
+        $builder->add('customer', EntityType::class, array(
             'class' => 'AppBundle:Customer',
             'property' => 'name',
             'empty_value' => 'Choisissez une option',
@@ -24,29 +29,24 @@ class QuotationType extends AbstractType
                     ->setParameter('id', $company->getId());
             }
         ));
-        $builder->add('number', 'text', ['label' => 'Numéro']);
-        $builder->add('date', 'date', ['input' => 'datetime']);
+        $builder->add('number', TextType::class, ['label' => 'Numéro']);
+        $builder->add('date', DateType::class, ['input' => 'datetime']);
         $builder->add('description');
-        $builder->add('items', 'collection', array(
+        $builder->add('items', CollectionType::class, array(
             'type' => new ItemType(),
             'allow_add' => true,
             'by_reference' => false,
         ));
         $builder->add('total');
 
-        $builder->add('draft', 'submit', ['label' => 'Enregistrer', 'attr' => array('class' => 'btn btn-default')]);
-        $builder->add('save', 'submit', ['label' => 'Terminer', 'attr' => array('class' => 'btn btn-danger')]);
+        $builder->add('draft', SubmitType::class, ['label' => 'Enregistrer', 'attr' => array('class' => 'btn btn-default')]);
+        $builder->add('save', SubmitType::class, ['label' => 'Terminer', 'attr' => array('class' => 'btn btn-danger')]);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Quotation',
         ));
-    }
-
-    public function getName()
-    {
-        return 'quotation';
     }
 }

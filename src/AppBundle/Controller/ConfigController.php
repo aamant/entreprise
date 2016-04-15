@@ -22,13 +22,13 @@ class ConfigController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
         $config = $user->getCompany()->getConfig();
         if (!$config){
             $config = new Config();
         }
 
-        $form = $this->createForm(new ConfigType(), $config);
+        $form = $this->createForm(ConfigType::class, $config);
         $form->handleRequest($request);
 
         if ($form->isValid()){

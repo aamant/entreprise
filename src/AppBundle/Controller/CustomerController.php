@@ -22,7 +22,7 @@ class CustomerController extends Controller
      */
     public function indexAction()
     {
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
         $customers = $user->getCompany()->getCustomers();
 
         return ['customers' => $customers];
@@ -87,7 +87,7 @@ class CustomerController extends Controller
             );
         }
 
-        $form = $this->createForm(new CustomerType(), $customer);
+        $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
 
         if ($form->isValid()){
@@ -113,12 +113,12 @@ class CustomerController extends Controller
      */
     public function newAction(Request $request)
     {
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
         $customer = new Customer();
         $customer->setCountry('FR');
 
-        $form = $this->createForm(new CustomerType(), $customer);
+        $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
 
         if ($form->isValid()){

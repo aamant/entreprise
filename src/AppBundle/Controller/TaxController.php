@@ -74,7 +74,7 @@ class TaxController extends Controller
      */
     private function createCreateForm(Tax $entity)
     {
-        $form = $this->createForm(new TaxType(), $entity, array(
+        $form = $this->createForm(TaxType::class, $entity, array(
             'action' => $this->generateUrl('tax_create'),
             'method' => 'POST',
         ));
@@ -160,7 +160,7 @@ class TaxController extends Controller
     */
     private function createEditForm(Tax $entity)
     {
-        $form = $this->createForm(new TaxType(), $entity, array(
+        $form = $this->createForm(TaxType::class, $entity, array(
             'action' => $this->generateUrl('tax_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));

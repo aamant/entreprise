@@ -23,7 +23,7 @@ class Tax
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Company")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Company", inversedBy="tax")
      */
     protected $company;
 

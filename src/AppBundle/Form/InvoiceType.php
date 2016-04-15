@@ -2,9 +2,13 @@
 
 use Doctrine\ORM\EntityRepository;
 use AppBundle\Form\Invoice\ItemType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InvoiceType extends AbstractType
 {
@@ -12,7 +16,7 @@ class InvoiceType extends AbstractType
     {
         $invoice = $options['data'];
         $company = $invoice->getCompany();
-        $builder->add('customer', 'entity', array(
+        $builder->add('customer', EntityType::class, array(
             'class' => 'AppBundle:Customer',
             'property' => 'name',
             'empty_value' => 'Choisissez un client',
@@ -24,7 +28,7 @@ class InvoiceType extends AbstractType
                     ->setParameter('id', $company->getId());
             }
         ));
-        $builder->add('quotation', 'entity', array(
+        $builder->add('quotation', EntityType::class, array(
             'class' => 'AppBundle:Quotation',
             'property' => 'fullname',
             'empty_value' => 'Choisissez un devis',
@@ -38,30 +42,25 @@ class InvoiceType extends AbstractType
                     ->setParameter('id', $company->getId());
             }
         ));
-        $builder->add('items', 'collection', array(
+        $builder->add('items', CollectionType::class, array(
             'type' => new ItemType(),
             'allow_add' => true,
             'by_reference' => false,
         ));
-        $builder->add('sub_total', 'text', ['label' => 'Sous-total']);
-        $builder->add('advance', 'text', ['label' => 'Acompte']);
+        $builder->add('sub_total', TextType::class, ['label' => 'Sous-total']);
+        $builder->add('advance', TextType::class, ['label' => 'Acompte']);
         $builder->add('total');
 
         if (!$invoice->getNumber()){
-            $builder->add('save', 'submit', ['label' => 'Enregistrer', 'attr' => array('class' => 'btn btn-default')]);
-            $builder->add('create', 'submit', ['label' => 'Terminer', 'attr' => array('class' => 'btn btn-danger')]);
+            $builder->add('save', SubmitType::class, ['label' => 'Enregistrer', 'attr' => array('class' => 'btn btn-default')]);
+            $builder->add('create', SubmitType::class, ['label' => 'Terminer', 'attr' => array('class' => 'btn btn-danger')]);
         }
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Invoice',
         ));
-    }
-
-    public function getName()
-    {
-        return 'invoice';
     }
 }

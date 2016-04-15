@@ -87,7 +87,7 @@ class InvoiceController extends Controller
             $invoice->addItem(new Invoice\Item());
         }
 
-        $form = $this->createForm(new InvoiceType(), $invoice);
+        $form = $this->createForm(InvoiceType::class, $invoice);
         $form->handleRequest($request);
 
         if ($form->isValid()){
@@ -201,7 +201,7 @@ class InvoiceController extends Controller
         $invoice = $this->getDoctrine()
             ->getRepository('AppBundle:Invoice')
             ->findFullWithUserById($id);
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
 
         return [
             'invoice'   => $invoice,
@@ -221,7 +221,7 @@ class InvoiceController extends Controller
             $invoice = $this->getDoctrine()
                 ->getRepository('AppBundle:Invoice')
                 ->findFullWithUserById($id);
-            $user = $this->get('security.context')->getToken()->getUser();
+            $user = $this->getUser();
             $config = $user->getCompany()->getConfig();
 
             $filename = $config->getInvoiceExport().'/Facture-'.$invoice->getNumber().'.pdf';

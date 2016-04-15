@@ -6,6 +6,7 @@
 namespace AppBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -17,7 +18,7 @@ class RegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('company', 'entity', array(
+        $builder->add('company', EntityType::class, array(
             'class' => 'AppBundle:Company',
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('c')
@@ -31,10 +32,5 @@ class RegistrationType extends AbstractType
     public function getParent()
     {
         return 'fos_user_registration';
-    }
-
-    public function getName()
-    {
-        return 'app_user_registration';
     }
 }

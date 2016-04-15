@@ -19,12 +19,12 @@ use AppBundle\Form\CompanyType;
 class CompanyController extends Controller
 {
     /**
-     * @Route("/company/profile", name="company_profile")
+     * @Route("/profile", name="company_profile")
      * @Template()
      */
     public function profileAction(Request $request)
     {
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
 
         $company = $user->getCompany();
@@ -32,7 +32,7 @@ class CompanyController extends Controller
             $company = new Company();
         }
 
-        $form = $this->createForm(new CompanyType(), $company);
+        $form = $this->createForm(CompanyType::class, $company);
         $form->handleRequest($request);
 
         if ($form->isValid()){
@@ -110,7 +110,7 @@ class CompanyController extends Controller
      */
     private function createCreateForm(Company $entity)
     {
-        $form = $this->createForm(new CompanyType(), $entity, array(
+        $form = $this->createForm(CompanyType::class, $entity, array(
             'action' => $this->generateUrl('company_create'),
             'method' => 'POST',
         ));

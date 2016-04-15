@@ -4,8 +4,10 @@ namespace AppBundle\Form;
 
 use Carbon\Carbon;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaxType extends AbstractType
 {
@@ -16,7 +18,7 @@ class TaxType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('year', 'choice', [
+            ->add('year', ChoiceType::class, [
                 'choices'   => call_user_func(function(){
                     $years = [];
                     $date = Carbon::now();
@@ -28,7 +30,7 @@ class TaxType extends AbstractType
                 }),
                 'label' => 'Année'
             ])
-            ->add('month', 'choice', [
+            ->add('month', ChoiceType::class, [
                 'choices'   => [
                     1 => 'Janvier',
                     2 => 'Fevrier',
@@ -45,27 +47,19 @@ class TaxType extends AbstractType
                 ],
                 'label' => 'Mois'
             ])
-            ->add('value', 'text', [
+            ->add('value', TextType::class, [
                 'label' => 'Montant'
             ])
         ;
     }
     
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Tax'
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'appbundle_tax';
     }
 }
