@@ -1,4 +1,4 @@
 source "https://rubygems.org"
 
-gem "capifony", group: :deployment
-gem "capistrano_rsync_with_remote_cache", group: :deployment
+gem 'capistrano',  '~> 3.4'
+gem 'capistrano-symfony', '~> 1.0.0.rc1'
