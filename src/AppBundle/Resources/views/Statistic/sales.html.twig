@@ -1,0 +1,3 @@
+{% for sale in sales %}
+    <p class="bg-{{ sale.color }} pad10">{{ sale.label }} <span class="pull-right">{{ sale.value|number_format(2, ',', '.') }} €</span></p>
+{% endfor %}

@@ -1,0 +1,28 @@
+<table class="table table-responsive">
+    <tr>
+        <th>Facture</th>
+        <th>Devis</th>
+        <th>Client</th>
+        <th>Montant</th>
+        <th>Reste à payer</th>
+        <th>&nbsp;</th>
+    </tr>
+    {% for invoice in invoices %}
+        <tr>
+            <td><a data-toggle="modal" data-href="{{ path('invoice_detail', {'id': invoice.id}) }}" data-target="#modal-invoice">{{ invoice.number }}</a></td>
+            <td>
+                {% if (invoice.quotation) %}
+                    <a href="{{ path('quotation.view', {'id': invoice.quotation.id}) }}" data-toggle="tooltip" title="{{ invoice.quotation.description }}">{{ invoice.quotation.number }}</a>
+                {% endif %}
+            </td>
+            <td><a href="{{ path('customer.view', {'id' : invoice.customer.id }) }}">{{ invoice.customer.name }}</a></td>
+            <td>{{ invoice.total|number_format(2, ',', '.') }} €</td>
+            <td>{{ (invoice.total - invoice.getPaid())|number_format(2, ',', '.') }} €</td>
+            <td>
+                {% if (date('-1week') > date(invoice.date)) %}
+                    <span class="label label-danger">Retard</span>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>

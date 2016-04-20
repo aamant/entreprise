@@ -1,0 +1,20 @@
+<table class="table table-responsive">
+    <tr>
+        <th>Devis</th>
+        <th>Client</th>
+        <th>Montant</th>
+        <th>Statut</th>
+        <th>Reste à facturer</th>
+    </tr>
+    {% for quotation in quotations %}
+        <tr>
+            <td>
+                <a href="{{ path('quotation.view', {'id': quotation.id}) }}" data-toggle="tooltip" title="{{ quotation.description }}">{{ quotation.number }}</a>
+            </td>
+            <td><a href="{{ path('customer.view', {'id' : quotation.customer.id }) }}">{{ quotation.customer.name }}</a></td>
+            <td>{{ quotation.total|number_format(2, ',', '.') }} €</td>
+            <td><span class="label label-primary">{{ quotation.getStatusName() }}</span></td>
+            <td>{{ (quotation.total - quotation.getBilled())|number_format(2, ',', '.') }} €</td>
+        </tr>
+    {% endfor %}
+</table>
