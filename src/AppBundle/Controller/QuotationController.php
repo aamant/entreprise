@@ -35,7 +35,7 @@ class QuotationController extends Controller
         $increment = $this->getDoctrine()
             ->getRepository('AppBundle:Quotation')
             ->getMaxNumber($this->getUser()->getCompany());
-        $quotation->setNumber(date('Ym-').sprintf("%'.03d", ++$increment));
+        $quotation->setNumber("1".date('Ym-').sprintf("%'.03d", ++$increment));
         $quotation->setDate(Carbon::now());
         $quotation->addItem(new Quotation\Item());
 
