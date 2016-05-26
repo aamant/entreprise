@@ -18,7 +18,7 @@
                 <div class="panel-heading">Chiffre d'affaire</div>
                 <div class="panel-body"></div>
             </div>
-            <div class="panel panel-widget">
+            <div class="panel panel-widget loaded">
                 <div class="panel-heading">Cumul</div>
                 <div class="panel-body">
                     <canvas id="recipeAnnualPerMonth"></canvas>
@@ -28,7 +28,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div class="panel panel-widget">
+            <div class="panel panel-widget loaded">
                 <div class="panel-heading">Chiffre d'affaire mensuel</div>
                 <div class="panel-body">
                     <canvas id="recipeByMonth"></canvas>
@@ -43,9 +43,6 @@
 <script>
     Chart.defaults.global.responsive = true;
     Chart.defaults.global.maintainAspectRatio = true;
-
-    {#var ctx = document.getElementById("doughnut").getContext("2d");#}
-    {#var Doughnut = new Chart(ctx).Pie({{ doughnut|json_encode|raw }});#}
 
     var ctx = document.getElementById("recipeByMonth").getContext("2d");
     var data = {

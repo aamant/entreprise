@@ -55,6 +55,8 @@ class Dashbord
             $wait_invoiced += $quotation->getTotal() - $quotation->getInvoicedValue();
         }
 
+        $invoiced = $paid + $wait_paid + $wait_invoiced;
+
         $data = [
             [
                 'label' => 'Encaissé',
@@ -73,10 +75,28 @@ class Dashbord
                 'value' => $wait_invoiced,
                 'color' => 'warning',
                 'highlight' => '#ab7967'
-            ], [
-                'label' => 'Reste',
-                'value' => $this->max_invoiced_per_year - ($paid + $wait_paid + $wait_invoiced),
+            ],
+            [
+                'label' => 'Total',
+                'value' => $invoiced,
+                'color' => 'primary',
+                'highlight' => '#96b5b4'
+            ],
+            [
+                'label' => 'Maximum',
+                'value' => $this->max_invoiced_per_year,
                 'color' => 'info',
+                'highlight' => '#96b5b4'
+            ],
+            [
+                'label' => ($this->max_invoiced_per_year >= $invoiced)
+                    ? 'Reste' : 'Dépassement',
+                'value' => ($this->max_invoiced_per_year >= $invoiced)
+                    ? $this->max_invoiced_per_year - $invoiced
+                    : $invoiced - $this->max_invoiced_per_year
+                ,
+                'color' => ($this->max_invoiced_per_year >= $invoiced)
+                    ? 'success' : 'danger',
                 'highlight' => '#96b5b4'
             ]
         ];
