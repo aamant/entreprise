@@ -3,7 +3,7 @@
 {% block main %}
     <div class="row">
         <div class="col-sm-8">
-            <div class="panel panel-widget" data-widget="table" data-url="{{ path('statistic.quotation', {status: 'accept'}) }}">
+            <div class="panel panel-widget" data-widget="table" data-url="{{ path('statistic.quotation', {status: 'accept,partial_invoiced'}) }}">
                 <div class="panel-heading">Devis en cours</div>
             </div>
             <div class="panel panel-widget" data-widget="table" data-url="{{ path('statistic.quotation', {status: 'wait'}) }}">

@@ -47,7 +47,8 @@ class StatisticController extends Controller
     public function quotationAction(Request $request, $status)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:Quotation');
-        $quotations = $repository->findByStatus($status);
+        $status = explode(',', $status);
+        $quotations = $repository->matching(Criteria::create()->where(Criteria::expr()->in('status', $status)));
 
         return [
             'quotations' => $quotations
