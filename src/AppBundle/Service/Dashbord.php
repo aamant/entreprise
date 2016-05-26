@@ -52,7 +52,7 @@ class Dashbord
             ->findWaitInvoice($company);
         $wait_invoiced = 0;
         foreach ($quotations as $quotation){
-            $wait_invoiced += $quotation->getTotal() - $quotation->getPaid();
+            $wait_invoiced += $quotation->getTotal() - $quotation->getInvoicedValue();
         }
 
         $data = [
