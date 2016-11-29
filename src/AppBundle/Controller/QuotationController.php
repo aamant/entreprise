@@ -26,7 +26,6 @@ class QuotationController extends Controller
 
     /**
      * @Route("quotation/create", name="invoice_quotation")
-     * @Template()
      */
     public function createAction(Request $request)
     {
@@ -69,12 +68,11 @@ class QuotationController extends Controller
             return $this->redirect($this->generateUrl('quotation.view', ['id' => $quotation->getId()]));
         }
 
-        return ['form' => $form->createView()];
+        return $this->render('AppBundle:Quotation:create.html.twig', ['form' => $form->createView()]);
     }
 
     /**
      * @Route("quotation/edit/{quotation}", name="quotation.edit")
-     * @Template()
      */
     public function editAction(Request $request, Quotation $quotation)
     {

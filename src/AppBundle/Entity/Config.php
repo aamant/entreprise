@@ -87,6 +87,13 @@ class Config
     protected $tax_rate = 0;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $payment_transfert = false;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -278,5 +285,28 @@ class Config
     public function getQuotationIncrement()
     {
         return $this->quotation_increment;
+    }
+
+    /**
+     * Set payment_transfert
+     *
+     * @param boolean $paymentTransfert
+     * @return Config
+     */
+    public function setPaymentTransfert($paymentTransfert)
+    {
+        $this->payment_transfert = $paymentTransfert;
+
+        return $this;
+    }
+
+    /**
+     * Get payment_transfert
+     *
+     * @return boolean 
+     */
+    public function getPaymentTransfert()
+    {
+        return $this->payment_transfert;
     }
 }

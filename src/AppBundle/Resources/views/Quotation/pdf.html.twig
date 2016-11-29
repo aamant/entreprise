@@ -130,10 +130,13 @@
             <span>Règlement</span>
             <ul>
                 <li>Par chèque libellé à l'ordre de « {{ company.name }} »</li>
+                {% if company.config.paymentTransfert %}
                 <li>Par virement</li>
+                {% endif %}
             </ul>
         </div>
     </div>
+    {% if company.config.paymentTransfert %}
     <br/>
     <div class="row">
         <div class="col-xs-12">
@@ -164,6 +167,7 @@
             </table>
         </div>
     </div>
+    {% endif %}
 </div>
 </body>
 </html>
