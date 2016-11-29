@@ -242,7 +242,7 @@ class Quotation
     {
         switch ($this->status){
             case static::STATUS_WAIT:
-                return "An attente";
+                return "En attente";
             case static::STATUS_ACCEPT:
                 return "Accepté";
             case static::STATUS_REFUSED:
@@ -253,6 +253,8 @@ class Quotation
                 return "Facturation partielle";
             case static::STATUS_INVOICED:
                 return 'facturé';
+            case static::STATUS_DRAFT:
+                return 'brouillon';
         }
     }
 
