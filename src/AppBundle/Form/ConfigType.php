@@ -14,6 +14,7 @@ class ConfigType extends AbstractType
         $builder->add('invoice_export', TextType::class, ['label' => 'Chemin des factures']);
         $builder->add('quotation_export', TextType::class, ['label' => 'Chemin des devis']);
         $builder->add('invoice_increment', TextType::class, ['label' => 'Numero de facture']);
+        $builder->add('quotation_increment', TextType::class, ['label' => 'Numero de devis']);
         $builder->add('deposit_invoice_text', TextType::class, ['label' => 'Texte des factures d\'acompte']);
         $builder->add('deposit_invoice_percent', TextType::class, ['label' => 'Pourcentage des factures d\'acompte']);
         $builder->add('tax_rate', TextType::class, ['label' => 'Ration de cotisation']);

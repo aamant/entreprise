@@ -451,6 +451,17 @@ class Quotation
     }
 
     /**
+     * @param $increment
+     * @return $this
+     */
+    public function create($increment)
+    {
+        $this->setDate(Carbon::now());
+        $this->setNumber("1".date('Ym').'-'.sprintf("%'.03d", $increment));
+        return $this;
+    }
+
+    /**
      *
      */
     function __clone()

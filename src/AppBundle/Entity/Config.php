@@ -47,6 +47,14 @@ class Config
     protected $invoice_export;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     */
+    protected $quotation_increment = 0;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -247,5 +255,28 @@ class Config
     public function getTaxRate()
     {
         return $this->tax_rate;
+    }
+
+    /**
+     * Set quotation_increment
+     *
+     * @param integer $quotationIncrement
+     * @return Config
+     */
+    public function setQuotationIncrement($quotationIncrement)
+    {
+        $this->quotation_increment = $quotationIncrement;
+
+        return $this;
+    }
+
+    /**
+     * Get quotation_increment
+     *
+     * @return integer 
+     */
+    public function getQuotationIncrement()
+    {
+        return $this->quotation_increment;
     }
 }

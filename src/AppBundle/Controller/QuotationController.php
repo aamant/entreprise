@@ -1,5 +1,6 @@
 <?php namespace AppBundle\Controller;
 
+use AppBundle\Entity\Config;
 use AppBundle\Entity\Quotation;
 use AppBundle\Form\QuotationType;
 use Carbon\Carbon;
@@ -31,12 +32,6 @@ class QuotationController extends Controller
     {
         $quotation = new Quotation();
         $quotation->setCompany($this->getUser()->getCompany());
-        $quotation->setStatus(Quotation::STATUS_WAIT);
-        $increment = $this->getDoctrine()
-            ->getRepository('AppBundle:Quotation')
-            ->getMaxNumber($this->getUser()->getCompany());
-        $quotation->setNumber("1".date('Ym-').sprintf("%'.03d", ++$increment));
-        $quotation->setDate(Carbon::now());
         $quotation->addItem(new Quotation\Item());
 
         $form = $this->createForm(QuotationType::class, $quotation);
@@ -44,11 +39,21 @@ class QuotationController extends Controller
 
         if ($form->isValid()){
 
+            $em = $this->getDoctrine()->getManager();
+
             if ($form->get('draft')->isClicked()){
                 $quotation->setStatus(Quotation::STATUS_DRAFT);
-                $quotation->setNumber('');
+            } else {
+                $quotation->setStatus(Quotation::STATUS_WAIT);
+                /** @var Config $config */
+                $config = $this->getUser()->getCompany()->getConfig();
+                $increment = $config->getQuotationIncrement();
+
+                $quotation->create($increment);
+                $config->setQuotationIncrement(++$increment);
+                $em->persist($config);
             }
-            $em = $this->getDoctrine()->getManager();
+
             $em->persist($quotation);
             $em->flush();
 
@@ -73,24 +78,27 @@ class QuotationController extends Controller
      */
     public function editAction(Request $request, Quotation $quotation)
     {
-        $increment = $this->getDoctrine()
-            ->getRepository('AppBundle:Quotation')
-            ->getMaxNumber($this->getUser()->getCompany());
-        $quotation->setNumber('1'.date('Ym-').sprintf("%'.03d", ++$increment));
-
         $form = $this->createForm(QuotationType::class, $quotation);
         $form->handleRequest($request);
 
         if ($form->isValid()){
+
+            $em = $this->getDoctrine()->getManager();
 
             if ($form->get('draft')->isClicked()){
                 $quotation->setStatus(Quotation::STATUS_DRAFT);
                 $quotation->setNumber('');
             } else {
                 $quotation->setStatus(Quotation::STATUS_WAIT);
+                /** @var Config $config */
+                $config = $this->getUser()->getCompany()->getConfig();
+                $increment = $config->getQuotationIncrement();
+
+                $quotation->create($increment);
+                $config->setQuotationIncrement(++$increment);
+                $em->persist($config);
             }
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($quotation);
             $em->flush();
 

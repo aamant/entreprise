@@ -33,8 +33,8 @@ class QuotationType extends AbstractType
                     ->setParameter('id', $company->getId());
             }
         ));
-        $builder->add('number', TextType::class, ['label' => 'Numéro']);
-        $builder->add('date', DateType::class, ['input' => 'datetime']);
+//        $builder->add('number', TextType::class, ['label' => 'Numéro']);
+//        $builder->add('date', DateType::class, ['input' => 'datetime']);
         $builder->add('description');
         $builder->add('items', CollectionType::class, array(
             'type'          => new ItemType(),
