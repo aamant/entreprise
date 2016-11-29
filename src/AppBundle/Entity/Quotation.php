@@ -77,7 +77,7 @@ class Quotation
     protected $status;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Quotation\Item", mappedBy="quotation", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Quotation\Item", mappedBy="quotation", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $items;
 
@@ -337,13 +337,14 @@ class Quotation
     }
 
     /**
-     * Remove items
+     * Remove item
      *
-     * @param \AppBundle\Entity\Quotation\Item $items
+     * @param \AppBundle\Entity\Quotation\Item $item
      */
-    public function removeItem(\AppBundle\Entity\Quotation\Item $items)
+    public function removeItem(\AppBundle\Entity\Quotation\Item $item)
     {
-        $this->items->removeElement($items);
+        $item->setQuotation();
+        $this->items->removeElement($item);
     }
 
     /**
@@ -447,5 +448,28 @@ class Quotation
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     *
+     */
+    function __clone()
+    {
+        $this->id = null;
+        $this->number = null;
+        $this->setDate(Carbon::now());
+        $this->setStatus(Quotation::STATUS_DRAFT);
+
+        if ($this->getInvoices() instanceof ArrayCollection)
+            $this->getInvoices()->clear();
+
+        if ($this->getItems() instanceof ArrayCollection){
+            $items = $this->getItems();
+            $this->getItems()->clear();
+
+            foreach ($items as $item){
+                $this->addItem(clone $item);
+            }
+        }
     }
 }

@@ -152,6 +152,31 @@ class QuotationController extends Controller
      * @param $id
      * @return array
      *
+     * @Route("quotation/duplicate/{id}", name="quotation.duplicate")
+     * @Template()
+     */
+    public function duplicateAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var Quotation $quotation */
+        $quotation = $em->getRepository('AppBundle:Quotation')->find($id);
+        /** @var Quotation $new */
+        $new = clone $quotation;
+
+        foreach ($quotation->getItems() as $item){
+            $new->addItem(clone $item);
+        }
+
+        $em->persist($new);
+        $em->flush();
+
+        return $this->redirectToRoute('quotation.edit', ['quotation' => $new->getId()]);
+    }
+
+    /**
+     * @param $id
+     * @return array
+     *
      * @Route("quotation/view/{id}", name="quotation.view")
      * @Template()
      */

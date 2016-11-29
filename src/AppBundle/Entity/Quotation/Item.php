@@ -166,7 +166,7 @@ class Item
      * @param \AppBundle\Entity\Quotation $quotation
      * @return Item
      */
-    public function setQuotation(\AppBundle\Entity\Quotation $quotation)
+    public function setQuotation(\AppBundle\Entity\Quotation $quotation = null)
     {
         $this->quotation = $quotation;
 

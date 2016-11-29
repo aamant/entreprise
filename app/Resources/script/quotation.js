@@ -10,6 +10,7 @@
         var node = $(el);
         Quotation.itemsContainer = node.find('.items >tbody');
         Quotation.total = node.find('#quotation_total');
+        Quotation.heures = node.find('#quotation_heure');
 
         node.find('table > tbody').children().each(function(key, element){
             Quotation.prototype.addItem(element);
@@ -30,14 +31,7 @@
 
             total.val(price.val() * qty.val());
 
-            var quotation_total = 0;
-            Quotation.itemsContainer.children().each(function(key, node){
-                quotation_total = parseFloat(quotation_total) + parseFloat($(node).find('[id$=_total]').val());
-                if (quotation_total == NaN){
-                    quotation_total = 0;
-                }
-            });
-            Quotation.total.val(parseFloat(quotation_total));
+            Quotation.prototype.total();
         }
 
         $element.find('[id$=_quantity]').change(calculate);
@@ -46,11 +40,30 @@
         $element.find('[data-action="remove-item"]').click(Quotation.prototype.removeItem);
     }
 
+    Quotation.prototype.total = function(){
+        var heures = 0;
+        var quotation_total = 0;
+        Quotation.itemsContainer.children().each(function(key, node){
+            quotation_total = parseFloat(quotation_total) + parseFloat($(node).find('[id$=_total]').val());
+            if (quotation_total == NaN){
+                quotation_total = 0;
+            }
+
+            heures = parseFloat(heures) + parseFloat($(node).find('[id$=_quantity]').val());
+            if (isNaN(heures)){
+                heures = 0;
+            }
+        });
+
+        Quotation.total.val(parseFloat(quotation_total));
+        Quotation.heures.val(parseFloat(heures));
+    }
+
     Quotation.prototype.removeItem = function(){
         $element = $(this).parents('tr');
-        $element.hide(1000, function(){
+        $element.hide(500, function(){
             $element.remove();
-            Quotation.advance.trigger('change');
+            Quotation.prototype.total();
         });
     }
 

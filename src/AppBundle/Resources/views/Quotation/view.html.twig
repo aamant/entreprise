@@ -6,6 +6,7 @@
     <div class="row">
         <div class="col-xs-12 text-right">
             <a class="btn btn-default" href="{{ path('quotation_pdf', {'id': quotation.id}) }}">Gérérer le PDF</a>
+            <a class="btn btn-default" href="{{ path('quotation.duplicate', {'id': quotation.id}) }}">Dupliquer</a>
             {% if (quotation.status == 'wait') %}
                 <a class="btn btn-primary" href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'accept'}) }}">Accepter</a>
                 <a class="btn btn-primary" href="{{ path('invoice_quotation_change', {'id': quotation.id, 'status': 'refused'}) }}">Refuser</a>
