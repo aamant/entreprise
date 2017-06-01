@@ -44,6 +44,13 @@ class Tax
     /**
      * @var float
      *
+     * @ORM\Column(name="total", type="float")
+     */
+    private $total;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="value", type="float")
      */
     private $value;
@@ -132,6 +139,25 @@ class Tax
     public function getYear()
     {
         return $this->year;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * @param float $total
+     * @return Tax
+     */
+    public function setTotal(float $total)
+    {
+        $this->total = $total;
+
+        return $this;
     }
 
     /**

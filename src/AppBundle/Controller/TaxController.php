@@ -51,6 +51,10 @@ class TaxController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
+        $total = $this->getDoctrine()->getRepository('AppBundle:Payment')
+            ->paymentForYearAndMonth($entity->getCompany(), $entity->getYear(), $entity->getMonth());
+        $entity->setTotal($total);
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
@@ -116,7 +120,11 @@ class TaxController extends Controller
 
         $value = $this->getDoctrine()->getRepository('AppBundle:Payment')
             ->paymentForYearAndMonth($company, $entity->getYear(), $entity->getMonth());
-        $entity->setValue($value * $company->getConfig()->getTaxRate());
+
+        $entity->setTotal($value);
+//        $entity->setValue($company->getConfig()->getTaxRate());
+        $value = floor($value);
+        $entity->setValue(round($value * 0.225) + round($value * 0.002));
 
         $form   = $this->createCreateForm($entity);
 

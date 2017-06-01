@@ -47,6 +47,13 @@ class TaxType extends AbstractType
                 ],
                 'label' => 'Mois'
             ])
+            ->add('total', TextType::class, [
+                'label' => 'Chiffre d\'affaire',
+//                'disabled' => true,
+                'attr' => [
+                    'disabled' => true
+                ]
+            ])
             ->add('value', TextType::class, [
                 'label' => 'Montant'
             ])
